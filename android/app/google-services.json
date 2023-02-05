@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1763966768",
+    "project_id": "mclovin-45294",
+    "storage_bucket": "mclovin-45294.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1763966768:android:d456807481fab4512792f5",
+        "android_client_info": {
+          "package_name": "com.example.mclovin_life_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXh2r7NgStJed4C0opp7fSX4Ph8oBh7dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
