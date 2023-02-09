@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mclovin_life_manager/model/todo.dart';
 
 class TodoFormDialog extends StatefulWidget {
-  const TodoFormDialog({super.key});
+  final Function refreshTodos;
+
+  const TodoFormDialog(this.refreshTodos, {super.key});
 
   @override
   State<TodoFormDialog> createState() => _TodoFormDialogState();
@@ -68,6 +71,7 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
                         "ownerId": FirebaseAuth.instance.currentUser!.uid,
                         "isWork": false,
                       });
+                      widget.refreshTodos();
                       Navigator.pop(context);
                     }
                   },
