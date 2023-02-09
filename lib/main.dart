@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mclovin_life_manager/pages/todo_page.dart';
 import 'firebase_options.dart';
+
+const String email = "mathieu.ford@gmail.com";
+const String password = "password";
 
 void main() async {
   runApp(const MyApp());
@@ -19,16 +23,42 @@ class MyApp extends StatelessWidget {
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.hasError) {
-            return const CircularProgressIndicator();
-          } else {
-            return MaterialApp(
-              title: 'McLovin Life Manager',
-              theme: ThemeData(
-                primarySwatch: Colors.pink,
-              ),
-              home: TodoPage(),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
+          return const MainApp();
         });
+  }
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "McLovin Life Manager",
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Center(child: Text("McLovin Life Manager")),
+        ),
+        body: FutureBuilder(
+          future: FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: email, password: password),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text("No internet connection"));
+            }
+            return Container();
+          },
+        ),
+      ),
+    );
   }
 }
