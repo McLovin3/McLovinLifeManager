@@ -8,8 +8,6 @@ import 'firebase_options.dart';
 const String email = "mathieu.ford@gmail.com";
 const String password = "password";
 
-//TODO uid is reserved term :l
-
 void main() async {
   runApp(const MyApp());
 }
