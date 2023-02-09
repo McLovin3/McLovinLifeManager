@@ -43,7 +43,27 @@ class TodoPageState extends State<TodoPage> {
               return ListTile(
                 key: Key(todos[index].id.toString()),
                 title: Text(todos[index].action),
-                trailing: Text(todos[index].dueDate.toString().split(" ")[0]),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(todos[index].dueDate.toString().split(" ")[0]),
+                    IconButton(
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection("todos")
+                            .doc(todos[index].id)
+                            .delete();
+                        setState(() {
+                          todos.removeAt(index);
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.check,
+                      ),
+                      color: Colors.green,
+                    ),
+                  ],
+                ),
               );
             },
             itemCount: todos.length,
