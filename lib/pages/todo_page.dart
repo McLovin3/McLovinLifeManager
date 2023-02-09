@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mclovin_life_manager/model/todo.dart';
 import 'package:mclovin_life_manager/widgets/loading_widget.dart';
+import 'package:mclovin_life_manager/widgets/todo_form_dialog.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -12,12 +13,14 @@ class TodoPage extends StatefulWidget {
 }
 
 class TodoPageState extends State<TodoPage> {
+  static List<Todo> todos = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Center(child: Text("TODO")),
-        ),
+        title: const Center(child: Text("TODO")),
+      ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection("todos")
@@ -27,13 +30,13 @@ class TodoPageState extends State<TodoPage> {
           if (!snapshot.hasData || snapshot.hasError) {
             return const LoadingWidget();
           }
-    
-          List<Todo> todos = snapshot.data!.docs
+
+          todos = snapshot.data!.docs
               .map((e) => Todo.fromQueryDocumentSnapshot(e))
               .toList();
-    
+
           todos.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    
+
           return ListView.separated(
             padding: const EdgeInsets.all(8),
             itemBuilder: (BuildContext _, int index) {
@@ -48,6 +51,20 @@ class TodoPageState extends State<TodoPage> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+            barrierDismissible: true,
+            context: context,
+            builder: (context) => const TodoFormDialog()),
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void addTodo(Todo todo) {
+    setState(() {
+      todos.add(todo);
+    });
   }
 }
