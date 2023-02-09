@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TodoFormDialog extends StatefulWidget {
-  const TodoFormDialog({super.key});
+  final Function refreshTodos;
+
+  const TodoFormDialog(this.refreshTodos, {super.key});
 
   @override
   State<TodoFormDialog> createState() => _TodoFormDialogState();
@@ -23,13 +25,15 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      contentPadding: const EdgeInsets.all(8),
+      title: const Center(child: Text("Add a todo")),
+      contentPadding: const EdgeInsets.all(15),
       children: [
         Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   hintText: "Todo",
                 ),
@@ -68,6 +72,7 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
                         "ownerId": FirebaseAuth.instance.currentUser!.uid,
                         "isWork": false,
                       });
+                      widget.refreshTodos();
                       Navigator.pop(context);
                     }
                   },

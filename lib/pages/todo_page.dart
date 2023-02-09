@@ -75,16 +75,14 @@ class TodoPageState extends State<TodoPage> {
         onPressed: () => showDialog(
             barrierDismissible: true,
             context: context,
-            builder: (context) => const TodoFormDialog()),
+            builder: (context) => TodoFormDialog(refreshTodos)),
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  void addTodo(Todo todo) {
-    setState(() {
-      todos.add(todo);
-    });
+  void refreshTodos() {
+    setState(() {});
   }
 }
