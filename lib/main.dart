@@ -19,17 +19,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.hasError) {
-            return const LoadingWidget();
-          }
-          return const MainApp();
-        });
+    return MaterialApp(
+      title: 'McLovin Life Manager',
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      home: FutureBuilder(
+          future: Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform,
+          ),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting ||
+                snapshot.hasError) {
+              return const LoadingWidget();
+            }
+            return const MainApp();
+          }),
+    );
   }
 }
 
@@ -40,26 +46,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "McLovin Life Manager",
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text("McLovin Life Manager")),
-        ),
-        body: FutureBuilder(
-          future: FirebaseAuth.instance
-              .signInWithEmailAndPassword(email: email, password: password),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(child: Text("No internet connection"));
-            }
-            return const TodoPage();
-          },
-        ),
-      ),
+    return FutureBuilder(
+      future: FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(child: Text("No internet connection"));
+        }
+        return const TodoPage();
+      },
     );
   }
 }

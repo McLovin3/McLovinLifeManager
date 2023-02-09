@@ -14,35 +14,40 @@ class TodoPage extends StatefulWidget {
 class TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseFirestore.instance
-          .collection("todos")
-          .where("ownerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .get(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.hasError) {
-          return const LoadingWidget();
-        }
-
-        List<Todo> todos = snapshot.data!.docs
-            .map((e) => Todo.fromQueryDocumentSnapshot(e))
-            .toList();
-
-        todos.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-
-        return ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemBuilder: (BuildContext _, int index) {
-            return ListTile(
-              key: Key(todos[index].id.toString()),
-              title: Text(todos[index].action),
-              trailing: Text(todos[index].dueDate.toString().split(" ")[0]),
-            );
-          },
-          itemCount: todos.length,
-          separatorBuilder: (BuildContext _, int __) => const Divider(),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+          title: const Center(child: Text("TODO")),
+        ),
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection("todos")
+            .where("ownerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.hasError) {
+            return const LoadingWidget();
+          }
+    
+          List<Todo> todos = snapshot.data!.docs
+              .map((e) => Todo.fromQueryDocumentSnapshot(e))
+              .toList();
+    
+          todos.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+    
+          return ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemBuilder: (BuildContext _, int index) {
+              return ListTile(
+                key: Key(todos[index].id.toString()),
+                title: Text(todos[index].action),
+                trailing: Text(todos[index].dueDate.toString().split(" ")[0]),
+              );
+            },
+            itemCount: todos.length,
+            separatorBuilder: (BuildContext _, int __) => const Divider(),
+          );
+        },
+      ),
     );
   }
 }
