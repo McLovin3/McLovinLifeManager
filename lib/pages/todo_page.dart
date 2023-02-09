@@ -28,12 +28,15 @@ class TodoPageState extends State<TodoPage> {
             .map((e) => Todo.fromQueryDocumentSnapshot(e))
             .toList();
 
+        todos.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+
         return ListView.separated(
           padding: const EdgeInsets.all(8),
           itemBuilder: (BuildContext _, int index) {
             return ListTile(
               key: Key(todos[index].id.toString()),
               title: Text(todos[index].action),
+              trailing: Text(todos[index].dueDate.toString().split(" ")[0]),
             );
           },
           itemCount: todos.length,
