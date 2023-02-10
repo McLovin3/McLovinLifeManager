@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 
 class TodoFormDialog extends StatefulWidget {
   final Function refreshTodos;
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
 
-  const TodoFormDialog(this.refreshTodos, {super.key});
+  const TodoFormDialog(
+      {required this.refreshTodos,
+      required this.firestore,
+      required this.firebaseAuth,
+      super.key});
 
   @override
   State<TodoFormDialog> createState() => _TodoFormDialogState();
@@ -66,10 +72,10 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      FirebaseFirestore.instance.collection("todos").add({
+                      widget.firestore.collection("todos").add({
                         "action": _actionController.text,
                         "dueDate": _dueDateController.text,
-                        "ownerId": FirebaseAuth.instance.currentUser!.uid,
+                        "ownerId": widget.firebaseAuth.currentUser!.uid,
                         "isWork": false,
                       });
                       widget.refreshTodos();

@@ -6,7 +6,11 @@ import 'package:mclovin_life_manager/widgets/loading_widget.dart';
 import 'package:mclovin_life_manager/widgets/todo_form_dialog.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
+
+  const TodoPage(
+      {required this.firestore, required this.firebaseAuth, super.key});
 
   @override
   State<StatefulWidget> createState() => TodoPageState();
@@ -22,9 +26,9 @@ class TodoPageState extends State<TodoPage> {
         title: const Center(child: Text("TODO")),
       ),
       body: FutureBuilder(
-        future: FirebaseFirestore.instance
+        future: widget.firestore
             .collection("todos")
-            .where("ownerId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .where("ownerId", isEqualTo: widget.firebaseAuth.currentUser!.uid)
             .get(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.hasError) {
@@ -49,7 +53,7 @@ class TodoPageState extends State<TodoPage> {
                     Text(todos[index].dueDate.toString().split(" ")[0]),
                     IconButton(
                       onPressed: () {
-                        FirebaseFirestore.instance
+                        widget.firestore
                             .collection("todos")
                             .doc(todos[index].id)
                             .delete();
@@ -75,7 +79,11 @@ class TodoPageState extends State<TodoPage> {
         onPressed: () => showDialog(
             barrierDismissible: true,
             context: context,
-            builder: (context) => TodoFormDialog(refreshTodos)),
+            builder: (context) => TodoFormDialog(
+                  refreshTodos: refreshTodos,
+                  firestore: widget.firestore,
+                  firebaseAuth: widget.firebaseAuth,
+                )),
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
