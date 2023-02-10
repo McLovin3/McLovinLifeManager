@@ -11,7 +11,8 @@ class TodoFormDialog extends StatefulWidget {
       {required this.refreshTodos,
       required this.firestore,
       required this.firebaseAuth,
-      super.key});
+      Key? key})
+      : super(key: key);
 
   @override
   State<TodoFormDialog> createState() => _TodoFormDialogState();
@@ -39,6 +40,7 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
           child: Column(
             children: [
               TextFormField(
+                key: const Key("action"),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   hintText: "Todo",
@@ -53,6 +55,7 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
                 },
               ),
               TextFormField(
+                key: const Key("dueDate"),
                 readOnly: true,
                 decoration: const InputDecoration(
                   hintText: "Due date",

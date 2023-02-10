@@ -10,7 +10,8 @@ class TodoPage extends StatefulWidget {
   final FirebaseAuth firebaseAuth;
 
   const TodoPage(
-      {required this.firestore, required this.firebaseAuth, super.key});
+      {required this.firestore, required this.firebaseAuth, Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => TodoPageState();
