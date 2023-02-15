@@ -39,8 +39,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  int _selectedPage = 0;
+  static final List<Widget> _pages = <Widget>[
+    TodoPage(
+        firebaseAuth: FirebaseAuth.instance,
+        firestore: FirebaseFirestore.instance),
+    BirthdayPage(
+        firebaseAuth: FirebaseAuth.instance,
+        firestore: FirebaseFirestore.instance),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +66,29 @@ class MainApp extends StatelessWidget {
         if (snapshot.hasError) {
           return const Center(child: Text("No internet connection"));
         }
-        return BirthdayPage(
-            firestore: FirebaseFirestore.instance,
-            firebaseAuth: FirebaseAuth.instance);
+        return Scaffold(
+            appBar: AppBar(
+              title: const Center(child: Text("McLovin Life Manager")),
+            ),
+            body: _pages.elementAt(_selectedPage),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.list),
+                  label: "Todo",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.cake),
+                  label: "Birthdays",
+                ),
+              ],
+              currentIndex: _selectedPage,
+              onTap: (int index) {
+                setState(() {
+                  _selectedPage = index;
+                });
+              },
+            ));
       },
     );
   }
