@@ -14,52 +14,56 @@ class TodoPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => TodoPageState();
+  State<StatefulWidget> createState() => _TodoPageState();
 }
 
-class TodoPageState extends State<TodoPage> {
-  static List<Todo> todos = [];
+class _TodoPageState extends State<TodoPage> {
+  late final List<Todo> _todos;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("TODO")),
+        backgroundColor: Colors.pinkAccent,
       ),
       body: FutureBuilder(
         future: widget.firestore
             .collection("todos")
             .where("ownerId", isEqualTo: widget.firebaseAuth.currentUser!.uid)
             .get(),
-        builder: (context, snapshot) {
+        builder: (_, snapshot) {
           if (!snapshot.hasData || snapshot.hasError) {
             return const LoadingWidget();
           }
 
-          todos = snapshot.data!.docs
+          _todos = snapshot.data!.docs
               .map((e) => Todo.fromQueryDocumentSnapshot(e))
               .toList();
 
-          todos.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+          _todos.sort((a, b) => a.dueDate.compareTo(b.dueDate));
 
           return ListView.separated(
             padding: const EdgeInsets.all(8),
-            itemBuilder: (BuildContext _, int index) {
+            itemBuilder: (_, index) {
+              Todo todo = _todos.elementAt(index);
+
               return ListTile(
-                key: Key(todos[index].id.toString()),
-                title: Text(todos[index].action),
+                key: Key(todo.id.toString()),
+                title: Text(todo.action),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(todos[index].dueDate.toString().split(" ")[0]),
+                    Text(
+                        "${todo.dueDate.year}-${todo.dueDate.month}-${todo.dueDate.day}"),
                     IconButton(
                       onPressed: () {
                         widget.firestore
                             .collection("todos")
-                            .doc(todos[index].id)
+                            .doc(todo.id)
                             .delete();
                         setState(() {
-                          todos.removeAt(index);
+                          _todos.removeAt(index);
                         });
                       },
                       icon: const Icon(
@@ -71,7 +75,7 @@ class TodoPageState extends State<TodoPage> {
                 ),
               );
             },
-            itemCount: todos.length,
+            itemCount: _todos.length,
             separatorBuilder: (BuildContext _, int __) => const Divider(),
           );
         },
