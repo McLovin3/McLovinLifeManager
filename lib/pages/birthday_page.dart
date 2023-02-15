@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mclovin_life_manager/widgets/birthday_form_dialog.dart';
 import 'package:mclovin_life_manager/widgets/loading_widget.dart';
 
 import '../model/birthday.dart';
@@ -23,7 +24,7 @@ class BirthdayPage extends StatefulWidget {
 }
 
 class _BirthdayPageState extends State<BirthdayPage> {
-  late final List<Birthday> _birthdays;
+  List<Birthday> _birthdays = [];
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,18 @@ class _BirthdayPageState extends State<BirthdayPage> {
               itemCount: _birthdays.length);
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+            barrierDismissible: true,
+            context: context,
+            builder: (context) => BirthdayFormDialog(
+                  refreshBirthdays: () => setState(() {}),
+                  firestore: widget._firestore,
+                  firebaseAuth: widget._firebaseAuth,
+                )),
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
