@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Birthday {
   String id;
   String ownerId;
+  String name;
   DateTime date;
 
   Birthday(
     this.id,
     this.ownerId,
+    this.name,
     this.date,
   );
 
@@ -26,6 +28,7 @@ class Birthday {
     return Birthday(
       json.id,
       json.data()["ownerId"],
+      json.data()["name"],
       DateTime.parse(json.data()["date"]),
     );
   }
