@@ -7,7 +7,16 @@ class Todo {
   DateTime dueDate;
   bool isWork;
 
-  static Todo fromQueryDocumentSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> json) {
+  Todo(
+    this.id,
+    this.ownerId,
+    this.action,
+    this.dueDate,
+    this.isWork,
+  );
+
+  static Todo fromQueryDocumentSnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> json) {
     return Todo(
       json.id,
       json.data()["ownerId"],
@@ -16,12 +25,4 @@ class Todo {
       json.data()["isWork"],
     );
   }
-
-  Todo(
-    this.id,
-    this.ownerId,
-    this.action,
-    this.dueDate,
-    this.isWork,
-  );
 }
