@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mclovin_life_manager/pages/birthday_page.dart';
 import 'package:mclovin_life_manager/pages/todo_page.dart';
 import 'package:mclovin_life_manager/widgets/loading_widget.dart';
 import 'firebase_options.dart';
@@ -50,7 +51,7 @@ class MainApp extends StatelessWidget {
         if (snapshot.hasError) {
           return const Center(child: Text("No internet connection"));
         }
-        return TodoPage(
+        return BirthdayPage(
             firestore: FirebaseFirestore.instance,
             firebaseAuth: FirebaseAuth.instance);
       },
