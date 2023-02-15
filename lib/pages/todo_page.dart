@@ -1,17 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/model/todo.dart';
 import 'package:mclovin_life_manager/widgets/loading_widget.dart';
 import 'package:mclovin_life_manager/widgets/todo_form_dialog.dart';
 
+import '../model/birthday.dart';
+
 class TodoPage extends StatefulWidget {
-  final FirebaseFirestore firestore;
-  final FirebaseAuth firebaseAuth;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _firebaseAuth;
 
   const TodoPage(
-      {required this.firestore, required this.firebaseAuth, Key? key})
-      : super(key: key);
+      {required FirebaseFirestore firestore,
+      required FirebaseAuth firebaseAuth,
+      Key? key})
+      : _firebaseAuth = firebaseAuth,
+        _firestore = firestore,
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TodoPageState();
@@ -28,9 +35,9 @@ class _TodoPageState extends State<TodoPage> {
         backgroundColor: Colors.pinkAccent,
       ),
       body: FutureBuilder(
-        future: widget.firestore
+        future: widget._firestore
             .collection("todos")
-            .where("ownerId", isEqualTo: widget.firebaseAuth.currentUser!.uid)
+            .where("ownerId", isEqualTo: widget._firebaseAuth.currentUser!.uid)
             .get(),
         builder: (_, snapshot) {
           if (!snapshot.hasData || snapshot.hasError) {
@@ -54,11 +61,10 @@ class _TodoPageState extends State<TodoPage> {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                        "${todo.dueDate.year}-${todo.dueDate.month}-${todo.dueDate.day}"),
+                    Text(DateFormat.MMMd().format(todo.dueDate)),
                     IconButton(
                       onPressed: () {
-                        widget.firestore
+                        widget._firestore
                             .collection("todos")
                             .doc(todo.id)
                             .delete();
@@ -86,8 +92,8 @@ class _TodoPageState extends State<TodoPage> {
             context: context,
             builder: (context) => TodoFormDialog(
                   refreshTodos: refreshTodos,
-                  firestore: widget.firestore,
-                  firebaseAuth: widget.firebaseAuth,
+                  firestore: widget._firestore,
+                  firebaseAuth: widget._firebaseAuth,
                 )),
         child: const Icon(Icons.add),
       ),
