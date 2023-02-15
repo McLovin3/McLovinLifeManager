@@ -57,9 +57,6 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
               TextFormField(
                 key: const Key("dueDate"),
                 readOnly: true,
-                decoration: const InputDecoration(
-                  hintText: "Due date",
-                ),
                 controller: _dueDateController,
                 onTap: () async {
                   DateTime? date = await showDatePicker(

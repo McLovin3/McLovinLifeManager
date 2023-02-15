@@ -6,8 +6,6 @@ import 'package:mclovin_life_manager/model/todo.dart';
 import 'package:mclovin_life_manager/widgets/loading_widget.dart';
 import 'package:mclovin_life_manager/widgets/todo_form_dialog.dart';
 
-import '../model/birthday.dart';
-
 class TodoPage extends StatefulWidget {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _firebaseAuth;
@@ -25,7 +23,7 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
-  late final List<Todo> _todos;
+  List<Todo> _todos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +89,7 @@ class _TodoPageState extends State<TodoPage> {
             barrierDismissible: true,
             context: context,
             builder: (context) => TodoFormDialog(
-                  refreshTodos: refreshTodos,
+                  refreshTodos: () => setState(() {}),
                   firestore: widget._firestore,
                   firebaseAuth: widget._firebaseAuth,
                 )),
@@ -99,9 +97,5 @@ class _TodoPageState extends State<TodoPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  void refreshTodos() {
-    setState(() {});
   }
 }
