@@ -61,7 +61,7 @@ class _BirthdayPageState extends State<BirthdayPage> {
                     children: [
                       Text(DateFormat.MMMd().format(birthday.date)),
                       InkWell(
-                        onLongPress: () {
+                        onDoubleTap: () {
                           widget._firestore
                               .collection("birthdays")
                               .doc(birthday.id)

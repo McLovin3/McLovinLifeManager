@@ -61,7 +61,7 @@ class _TodoPageState extends State<TodoPage> {
                   children: [
                     Text(DateFormat.MMMd().format(todo.dueDate)),
                     InkWell(
-                      onLongPress: () {
+                      onDoubleTap: () {
                         widget._firestore
                             .collection("todos")
                             .doc(todo.id)
