@@ -60,8 +60,8 @@ class _TodoPageState extends State<TodoPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(DateFormat.MMMd().format(todo.dueDate)),
-                    IconButton(
-                      onPressed: () {
+                    InkWell(
+                      onLongPress: () {
                         widget._firestore
                             .collection("todos")
                             .doc(todo.id)
@@ -70,10 +70,14 @@ class _TodoPageState extends State<TodoPage> {
                           _todos.removeAt(index);
                         });
                       },
-                      icon: const Icon(
-                        Icons.check,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          size: 30,
+                          Icons.check,
+                          color: Colors.green,
+                        ),
                       ),
-                      color: Colors.green,
                     ),
                   ],
                 ),

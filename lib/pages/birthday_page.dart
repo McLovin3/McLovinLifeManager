@@ -60,19 +60,23 @@ class _BirthdayPageState extends State<BirthdayPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(DateFormat.MMMd().format(birthday.date)),
-                      IconButton(
-                        onPressed: () {
+                      InkWell(
+                        onLongPress: () {
                           widget._firestore
                               .collection("birthdays")
                               .doc(birthday.id)
                               .delete();
                           setState(() {
-                            _birthdays.remove(birthday);
+                            _birthdays.removeAt(index);
                           });
                         },
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.red,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            size: 30,
+                            Icons.close,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
                     ],
