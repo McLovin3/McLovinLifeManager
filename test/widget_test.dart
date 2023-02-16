@@ -2,6 +2,8 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
+import 'package:mclovin_life_manager/pages/birthday_page.dart';
 
 import 'package:mclovin_life_manager/pages/todo_page.dart';
 
@@ -25,6 +27,11 @@ Future<void> main() async {
     "isWork": false,
     "ownerId": "123456"
   });
+  await firestore.collection("birthdays").add({
+    "name": "Mathieu Ford",
+    "date": "2002-10-11",
+    "ownerId": "123456",
+  });
 
   testWidgets("Shows todo test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
@@ -41,7 +48,7 @@ Future<void> main() async {
         home: TodoPage(firestore: firestore, firebaseAuth: auth)));
     await tester.pump();
 
-    await tester.tap(find.byType(IconButton));
+    await tester.longPress(find.byIcon(Icons.check));
     await tester.pumpAndSettle();
 
     expect(find.text("Do stuff"), findsNothing);
@@ -61,6 +68,45 @@ Future<void> main() async {
     await tester.pumpAndSettle();
 
     expect(find.text("Do more stuff"), findsOneWidget);
-    expect(find.text(DateTime.now().toString().split(" ")[0]), findsOneWidget);
+    expect(find.text(DateFormat.MMMd().format(DateTime.now())), findsOneWidget);
+  });
+
+  testWidgets("Shows birthday test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
+    await tester.pump();
+
+    expect(find.text("Mathieu Ford"), findsOneWidget);
+    expect(find.text("Oct 11"), findsOneWidget);
+  });
+
+  testWidgets("Remove birthday test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
+    await tester.pump();
+
+    await tester.longPress(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Mathieu Ford"), findsNothing);
+  });
+
+  testWidgets("Add birthday test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
+    await tester.pump();
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(const Key("name")), "Joe Biden");
+    await tester.tap(find.text("Confirm"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Joe Biden"), findsOneWidget);
+    expect(find.text(DateFormat.MMMd().format(DateTime.now())), findsOneWidget);
   });
 }
