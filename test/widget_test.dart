@@ -1,5 +1,6 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -48,7 +49,9 @@ Future<void> main() async {
         home: TodoPage(firestore: firestore, firebaseAuth: auth)));
     await tester.pump();
 
-    await tester.longPress(find.byIcon(Icons.check));
+    await tester.tap(find.byIcon(Icons.check));
+    await tester.pump(kDoubleTapMinTime);
+    await tester.tap(find.byIcon(Icons.check));
     await tester.pumpAndSettle();
 
     expect(find.text("Do stuff"), findsNothing);
@@ -87,7 +90,9 @@ Future<void> main() async {
         home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
     await tester.pump();
 
-    await tester.longPress(find.byIcon(Icons.close));
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pump(kDoubleTapMinTime);
+    await tester.tap(find.byIcon(Icons.close));
     await tester.pumpAndSettle();
 
     expect(find.text("Mathieu Ford"), findsNothing);
