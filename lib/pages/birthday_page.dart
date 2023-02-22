@@ -31,7 +31,6 @@ class _BirthdayPageState extends State<BirthdayPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Birthdays")),
-        backgroundColor: Colors.pinkAccent,
       ),
       body: FutureBuilder(
         future: widget._firestore

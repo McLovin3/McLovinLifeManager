@@ -30,7 +30,6 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("TODO")),
-        backgroundColor: Colors.pinkAccent,
       ),
       body: FutureBuilder(
         future: widget._firestore

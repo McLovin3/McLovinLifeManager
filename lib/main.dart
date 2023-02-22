@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mclovin_life_manager/pages/birthday_page.dart';
 import 'package:mclovin_life_manager/pages/todo_page.dart';
+import 'package:mclovin_life_manager/widgets/themes/themes.dart';
 import 'firebase_options.dart';
 
 const String email = "mathieu.ford@gmail.com";
@@ -27,6 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedPage = 0;
+  bool _isDarkTheme = false;
   static final List<Widget> _pages = <Widget>[
     TodoPage(
         firebaseAuth: FirebaseAuth.instance,
@@ -40,9 +42,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "McLovin Life Manager",
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       home: FutureBuilder(
         future: FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password),
@@ -53,6 +55,16 @@ class _MyAppState extends State<MyApp> {
           return Scaffold(
               appBar: AppBar(
                 title: const Center(child: Text("McLovin Life Manager")),
+                actions: [
+                  IconButton(
+                    icon: Icon(_isDarkTheme ? Icons.sunny : Icons.nightlight),
+                    onPressed: () {
+                      setState(() {
+                        _isDarkTheme = !_isDarkTheme;
+                      });
+                    },
+                  )
+                ],
               ),
               body: _pages.elementAt(_selectedPage),
               bottomNavigationBar: BottomNavigationBar(
