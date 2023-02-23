@@ -7,16 +7,16 @@ import 'package:mclovin_life_manager/widgets/loading_widget.dart';
 import 'package:mclovin_life_manager/widgets/todo_form_dialog.dart';
 
 class TodoPage extends StatefulWidget {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _firebaseAuth;
+  final bool isWorkMode;
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
 
-  const TodoPage(
-      {required FirebaseFirestore firestore,
-      required FirebaseAuth firebaseAuth,
-      Key? key})
-      : _firebaseAuth = firebaseAuth,
-        _firestore = firestore,
-        super(key: key);
+  const TodoPage({
+    required this.isWorkMode,
+    required this.firestore,
+    required this.firebaseAuth,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TodoPageState();
@@ -32,9 +32,10 @@ class _TodoPageState extends State<TodoPage> {
         title: const Center(child: Text("TODO")),
       ),
       body: FutureBuilder(
-        future: widget._firestore
+        future: widget.firestore
             .collection("todos")
-            .where("ownerId", isEqualTo: widget._firebaseAuth.currentUser!.uid)
+            .where("ownerId", isEqualTo: widget.firebaseAuth.currentUser!.uid)
+            .where("isWork", isEqualTo: widget.isWorkMode)
             .get(),
         builder: (_, snapshot) {
           if (!snapshot.hasData || snapshot.hasError) {
@@ -61,7 +62,7 @@ class _TodoPageState extends State<TodoPage> {
                     Text(DateFormat.MMMd().format(todo.dueDate)),
                     InkWell(
                       onDoubleTap: () {
-                        widget._firestore
+                        widget.firestore
                             .collection("todos")
                             .doc(todo.id)
                             .delete();
@@ -93,8 +94,9 @@ class _TodoPageState extends State<TodoPage> {
             context: context,
             builder: (context) => TodoFormDialog(
                   refreshTodos: () => setState(() {}),
-                  firestore: widget._firestore,
-                  firebaseAuth: widget._firebaseAuth,
+                  firestore: widget.firestore,
+                  isWorkMode : widget.isWorkMode,
+                  firebaseAuth: widget.firebaseAuth,
                 )),
         child: const Icon(Icons.add),
       ),

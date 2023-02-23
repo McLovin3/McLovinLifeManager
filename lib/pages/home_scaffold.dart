@@ -7,12 +7,14 @@ import 'birthday_page.dart';
 
 class HomeScaffold extends StatefulWidget {
   final bool isDarkTheme;
+  final Function changeMode;
   final Function changeTheme;
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
   const HomeScaffold({
     required this.isDarkTheme,
+    required this.changeMode,
     required this.changeTheme,
     required this.firestore,
     required this.firebaseAuth,
@@ -30,6 +32,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
   Widget build(BuildContext context) {
     final List<Widget> pages = <Widget>[
       TodoPage(
+        isWorkMode: false,
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
       ),
@@ -39,8 +42,12 @@ class _HomeScaffoldState extends State<HomeScaffold> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("McLovin Life Manager")),
+        title: const Center(child: Text("Home")),
         actions: [
+          IconButton(
+            onPressed: () => widget.changeMode(),
+            icon: const Icon(Icons.work),
+          ),
           IconButton(
             icon: Icon(widget.isDarkTheme ? Icons.sunny : Icons.nightlight),
             onPressed: () => widget.changeTheme(),

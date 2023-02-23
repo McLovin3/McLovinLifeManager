@@ -3,16 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TodoFormDialog extends StatefulWidget {
+  final bool isWorkMode;
   final Function refreshTodos;
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
-  const TodoFormDialog(
-      {required this.refreshTodos,
-      required this.firestore,
-      required this.firebaseAuth,
-      Key? key})
-      : super(key: key);
+  const TodoFormDialog({
+    required this.isWorkMode,
+    required this.refreshTodos,
+    required this.firestore,
+    required this.firebaseAuth,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TodoFormDialog> createState() => _TodoFormDialogState();
@@ -76,7 +78,7 @@ class _TodoFormDialogState extends State<TodoFormDialog> {
                         "action": _actionController.text,
                         "dueDate": _dueDateController.text,
                         "ownerId": widget.firebaseAuth.currentUser!.uid,
-                        "isWork": false,
+                        "isWork": widget.isWorkMode,
                       });
                       widget.refreshTodos();
                       Navigator.pop(context);
