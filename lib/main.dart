@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:light/light.dart';
 import 'package:mclovin_life_manager/pages/birthday_page.dart';
 import 'package:mclovin_life_manager/pages/todo_page.dart';
 import 'package:mclovin_life_manager/widgets/themes/themes.dart';
@@ -9,12 +10,15 @@ import 'firebase_options.dart';
 
 const String email = "mathieu.ford@gmail.com";
 const String password = "password";
+const int lightThreshhold = 25;
+late final int lightLevel;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  lightLevel = await Light().lightSensorStream.first;
 
   runApp(const MyApp());
 }
@@ -28,7 +32,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedPage = 0;
-  bool _isDarkTheme = false;
+  bool _isDarkTheme = lightLevel < lightThreshhold;
   static final List<Widget> _pages = <Widget>[
     TodoPage(
         firebaseAuth: FirebaseAuth.instance,
@@ -53,38 +57,39 @@ class _MyAppState extends State<MyApp> {
             return const Center(child: Text("No internet connection"));
           }
           return Scaffold(
-              appBar: AppBar(
-                title: const Center(child: Text("McLovin Life Manager")),
-                actions: [
-                  IconButton(
-                    icon: Icon(_isDarkTheme ? Icons.sunny : Icons.nightlight),
-                    onPressed: () {
-                      setState(() {
-                        _isDarkTheme = !_isDarkTheme;
-                      });
-                    },
-                  )
-                ],
-              ),
-              body: _pages.elementAt(_selectedPage),
-              bottomNavigationBar: BottomNavigationBar(
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.list),
-                    label: "Todo",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.cake),
-                    label: "Birthdays",
-                  ),
-                ],
-                currentIndex: _selectedPage,
-                onTap: (int index) {
-                  setState(() {
-                    _selectedPage = index;
-                  });
-                },
-              ));
+            appBar: AppBar(
+              title: const Center(child: Text("McLovin Life Manager")),
+              actions: [
+                IconButton(
+                  icon: Icon(_isDarkTheme ? Icons.sunny : Icons.nightlight),
+                  onPressed: () {
+                    setState(() {
+                      _isDarkTheme = !_isDarkTheme;
+                    });
+                  },
+                )
+              ],
+            ),
+            body: _pages.elementAt(_selectedPage),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.list),
+                  label: "Todo",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.cake),
+                  label: "Birthdays",
+                ),
+              ],
+              currentIndex: _selectedPage,
+              onTap: (int index) {
+                setState(() {
+                  _selectedPage = index;
+                });
+              },
+            ),
+          );
         },
       ),
     );
