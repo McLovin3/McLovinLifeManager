@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
 import 'package:mclovin_life_manager/pages/birthday_page.dart';
 import 'package:mclovin_life_manager/pages/todo_page.dart';
-import 'package:mclovin_life_manager/pages/general_scaffold.dart';
+import 'package:mclovin_life_manager/widgets/other/general_scaffold.dart';
 import 'package:mclovin_life_manager/widgets/themes/themes.dart';
 import 'firebase_options.dart';
 

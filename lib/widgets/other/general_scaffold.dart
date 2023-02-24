@@ -10,7 +10,7 @@ class GeneralScaffold extends StatefulWidget {
   final Function changeTheme;
   final List<Widget> pages;
   final BottomNavigationBar? bottomNavigationBar;
-  final Function changeMode;
+  final Function changeMode;  
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
