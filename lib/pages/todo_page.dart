@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/model/todo.dart';
-import 'package:mclovin_life_manager/widgets/loading_widget.dart';
-import 'package:mclovin_life_manager/widgets/todo_form_dialog.dart';
+import 'package:mclovin_life_manager/widgets/other/loading_widget.dart';
+
+import '../widgets/forms/todo_form_dialog.dart';
 
 class TodoPage extends StatefulWidget {
   final bool isWorkMode;

@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
-import 'package:mclovin_life_manager/pages/home_scaffold.dart';
-import 'package:mclovin_life_manager/pages/work_scaffold.dart';
+import 'package:mclovin_life_manager/pages/birthday_page.dart';
+import 'package:mclovin_life_manager/pages/todo_page.dart';
+import 'package:mclovin_life_manager/pages/general_scaffold.dart';
 import 'package:mclovin_life_manager/widgets/themes/themes.dart';
 import 'firebase_options.dart';
 
@@ -31,7 +32,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isWorkTheme = false;
+  int _selectedPage = 0;
+  bool _isWorkMode = false;
   bool _isDarkTheme = lightLevel < lightThreshhold;
 
   @override
@@ -48,15 +50,57 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.hasError) {
             return const Center(child: Text("No internet connection"));
           }
-          return _isWorkTheme
-              ? WorkScaffold(
+          return _isWorkMode
+              ? GeneralScaffold(
+                  title: "Work",
+                  selectedPage: _selectedPage,
+                  isWorkMode: _isWorkMode,
+                  bottomNavigationBar: null,
+                  pages: [
+                    TodoPage(
+                      isWorkMode: true,
+                      firebaseAuth: FirebaseAuth.instance,
+                      firestore: FirebaseFirestore.instance,
+                    ),
+                  ],
                   isDarkTheme: _isDarkTheme,
                   changeTheme: changeTheme,
                   changeMode: changeMode,
                   firestore: FirebaseFirestore.instance,
                   firebaseAuth: FirebaseAuth.instance,
                 )
-              : HomeScaffold(
+              : GeneralScaffold(
+                  title: "Home",
+                  isWorkMode: _isWorkMode,
+                  selectedPage: _selectedPage,
+                  bottomNavigationBar: BottomNavigationBar(
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.list),
+                        label: "Todo",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.cake),
+                        label: "Birthdays",
+                      ),
+                    ],
+                    onTap: (index) {
+                      setState(() {
+                        _selectedPage = index;
+                      });
+                    },
+                  ),
+                  pages: [
+                    TodoPage(
+                      isWorkMode: false,
+                      firebaseAuth: FirebaseAuth.instance,
+                      firestore: FirebaseFirestore.instance,
+                    ),
+                    BirthdayPage(
+                      firebaseAuth: FirebaseAuth.instance,
+                      firestore: FirebaseFirestore.instance,
+                    ),
+                  ],
                   changeMode: changeMode,
                   firebaseAuth: FirebaseAuth.instance,
                   firestore: FirebaseFirestore.instance,
@@ -76,7 +120,7 @@ class _MyAppState extends State<MyApp> {
 
   void changeMode() {
     setState(() {
-      _isWorkTheme = !_isWorkTheme;
+      _isWorkMode = !_isWorkMode;
     });
   }
 }

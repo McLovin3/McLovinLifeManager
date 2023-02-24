@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mclovin_life_manager/widgets/birthday_form_dialog.dart';
-import 'package:mclovin_life_manager/widgets/loading_widget.dart';
+import 'package:mclovin_life_manager/widgets/other/loading_widget.dart';
 
 import '../model/birthday.dart';
+import '../widgets/forms/birthday_form_dialog.dart';
 
 class BirthdayPage extends StatefulWidget {
   final FirebaseFirestore _firestore;
