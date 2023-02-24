@@ -34,7 +34,7 @@ class MyApp extends StatefulWidget {
   final FirebaseAuth firebaseAuth;
   final int lightLevel;
 
-  const MyApp({
+  const  MyApp({
     super.key,
     required this.firestore,
     required this.firebaseAuth,
@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       darkTheme: darkTheme,
       themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       home: FutureBuilder(
-        future: FirebaseAuth.instance
+        future: widget.firebaseAuth
             .signInWithEmailAndPassword(email: email, password: password),
         builder: (context, snapshot) {
           if (snapshot.hasError) {

@@ -41,7 +41,7 @@ class _GeneralScaffoldState extends State<GeneralScaffold> {
         actions: [
           IconButton(
             onPressed: () => widget.changeMode(),
-            icon: Icon(widget.isWorkMode ? Icons.work : Icons.home),
+            icon: Icon(widget.isWorkMode ? Icons.home : Icons.work),
           ),
           IconButton(
             icon: Icon(widget.isDarkTheme ? Icons.sunny : Icons.nightlight),
