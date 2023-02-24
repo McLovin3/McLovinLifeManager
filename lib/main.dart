@@ -12,20 +12,34 @@ import 'firebase_options.dart';
 const String email = "mathieu.ford@gmail.com";
 const String password = "password";
 const int lightThreshhold = 25;
-late final int lightLevel;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  lightLevel = await Light().lightSensorStream.first;
+  int lightLevel = await Light().lightSensorStream.first;
 
-  runApp(const MyApp());
+  runApp(
+    MyApp(
+      firestore: FirebaseFirestore.instance,
+      firebaseAuth: FirebaseAuth.instance,
+      lightLevel: lightLevel,
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
+  final int lightLevel;
+
+  const MyApp({
+    super.key,
+    required this.firestore,
+    required this.firebaseAuth,
+    required this.lightLevel,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -34,7 +48,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _selectedPage = 0;
   bool _isWorkMode = false;
-  bool _isDarkTheme = lightLevel < lightThreshhold;
+  bool _isDarkTheme = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isDarkTheme = widget.lightLevel < lightThreshhold;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +79,15 @@ class _MyAppState extends State<MyApp> {
                   pages: [
                     TodoPage(
                       isWorkMode: true,
-                      firebaseAuth: FirebaseAuth.instance,
-                      firestore: FirebaseFirestore.instance,
+                      firebaseAuth: widget.firebaseAuth,
+                      firestore: widget.firestore,
                     ),
                   ],
                   isDarkTheme: _isDarkTheme,
                   changeTheme: changeTheme,
                   changeMode: changeMode,
-                  firestore: FirebaseFirestore.instance,
-                  firebaseAuth: FirebaseAuth.instance,
+                  firestore: widget.firestore,
+                  firebaseAuth: widget.firebaseAuth,
                 )
               : GeneralScaffold(
                   title: "Home",
@@ -93,17 +113,17 @@ class _MyAppState extends State<MyApp> {
                   pages: [
                     TodoPage(
                       isWorkMode: false,
-                      firebaseAuth: FirebaseAuth.instance,
-                      firestore: FirebaseFirestore.instance,
+                      firebaseAuth: widget.firebaseAuth,
+                      firestore: widget.firestore,
                     ),
                     BirthdayPage(
-                      firebaseAuth: FirebaseAuth.instance,
-                      firestore: FirebaseFirestore.instance,
+                      firebaseAuth: widget.firebaseAuth,
+                      firestore: widget.firestore,
                     ),
                   ],
                   changeMode: changeMode,
-                  firebaseAuth: FirebaseAuth.instance,
-                  firestore: FirebaseFirestore.instance,
+                  firebaseAuth: widget.firebaseAuth,
+                  firestore: widget.firestore,
                   changeTheme: changeTheme,
                   isDarkTheme: _isDarkTheme,
                 );
