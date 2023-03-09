@@ -8,16 +8,12 @@ import '../model/birthday.dart';
 import '../widgets/forms/birthday_form_dialog.dart';
 
 class BirthdayPage extends StatefulWidget {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
 
   const BirthdayPage(
-      {required FirebaseFirestore firestore,
-      required FirebaseAuth firebaseAuth,
-      Key? key})
-      : _firebaseAuth = firebaseAuth,
-        _firestore = firestore,
-        super(key: key);
+      {required this.firestore, required this.firebaseAuth, Key? key})
+      : super(key: key);
 
   @override
   State<BirthdayPage> createState() => _BirthdayPageState();
@@ -33,9 +29,9 @@ class _BirthdayPageState extends State<BirthdayPage> {
         title: const Center(child: Text("Birthdays")),
       ),
       body: FutureBuilder(
-        future: widget._firestore
+        future: widget.firestore
             .collection("birthdays")
-            .where("ownerId", isEqualTo: widget._firebaseAuth.currentUser!.uid)
+            .where("ownerId", isEqualTo: widget.firebaseAuth.currentUser!.uid)
             .get(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.hasError) {
@@ -61,7 +57,7 @@ class _BirthdayPageState extends State<BirthdayPage> {
                       Text(DateFormat.MMMd().format(birthday.date)),
                       InkWell(
                         onDoubleTap: () {
-                          widget._firestore
+                          widget.firestore
                               .collection("birthdays")
                               .doc(birthday.id)
                               .delete();
@@ -92,8 +88,8 @@ class _BirthdayPageState extends State<BirthdayPage> {
             context: context,
             builder: (context) => BirthdayFormDialog(
                   refreshBirthdays: () => setState(() {}),
-                  firestore: widget._firestore,
-                  firebaseAuth: widget._firebaseAuth,
+                  firestore: widget.firestore,
+                  firebaseAuth: widget.firebaseAuth,
                 )),
         child: const Icon(Icons.add),
       ),
