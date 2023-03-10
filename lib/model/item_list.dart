@@ -19,7 +19,7 @@ class ItemList {
       json.id,
       json.data()["ownerId"],
       json.data()["title"],
-      json.data()["items"],
+      (json.data()["items"] as List).map((e) => e as String).toList(),
     );
   }
 }
