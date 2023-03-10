@@ -68,6 +68,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       ),
       body: pages.elementAt(_selectedPage),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedPage,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
