@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
-import 'package:mclovin_life_manager/pages/birthday_page.dart';
-import 'package:mclovin_life_manager/pages/todo_page.dart';
-import 'package:mclovin_life_manager/widgets/other/general_scaffold.dart';
+import 'package:mclovin_life_manager/widgets/other/home_scaffold.dart';
+import 'package:mclovin_life_manager/widgets/other/work_scaffold.dart';
 import 'package:mclovin_life_manager/widgets/themes/themes.dart';
 import 'firebase_options.dart';
 
@@ -34,7 +33,7 @@ class MyApp extends StatefulWidget {
   final FirebaseAuth firebaseAuth;
   final int lightLevel;
 
-  const  MyApp({
+  const MyApp({
     super.key,
     required this.firestore,
     required this.firebaseAuth,
@@ -46,7 +45,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int _selectedPage = 0;
   bool _isWorkMode = false;
   bool _isDarkTheme = false;
 
@@ -71,61 +69,19 @@ class _MyAppState extends State<MyApp> {
             return const Center(child: Text("No internet connection"));
           }
           return _isWorkMode
-              ? GeneralScaffold(
-                  title: "Work",
-                  selectedPage: _selectedPage,
-                  isWorkMode: _isWorkMode,
-                  bottomNavigationBar: null,
-                  pages: [
-                    TodoPage(
-                      isWorkMode: true,
-                      firebaseAuth: widget.firebaseAuth,
-                      firestore: widget.firestore,
-                    ),
-                  ],
+              ? WorkScaffold(
+                  firebaseAuth: widget.firebaseAuth,
+                  firestore: widget.firestore,
                   isDarkTheme: _isDarkTheme,
                   changeTheme: changeTheme,
                   changeMode: changeMode,
-                  firestore: widget.firestore,
-                  firebaseAuth: widget.firebaseAuth,
                 )
-              : GeneralScaffold(
-                  title: "Home",
-                  isWorkMode: _isWorkMode,
-                  selectedPage: _selectedPage,
-                  bottomNavigationBar: BottomNavigationBar(
-                    items: const [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.list),
-                        label: "Todo",
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.cake),
-                        label: "Birthdays",
-                      ),
-                    ],
-                    onTap: (index) {
-                      setState(() {
-                        _selectedPage = index;
-                      });
-                    },
-                  ),
-                  pages: [
-                    TodoPage(
-                      isWorkMode: false,
-                      firebaseAuth: widget.firebaseAuth,
-                      firestore: widget.firestore,
-                    ),
-                    BirthdayPage(
-                      firebaseAuth: widget.firebaseAuth,
-                      firestore: widget.firestore,
-                    ),
-                  ],
-                  changeMode: changeMode,
+              : HomeScaffold(
                   firebaseAuth: widget.firebaseAuth,
                   firestore: widget.firestore,
-                  changeTheme: changeTheme,
                   isDarkTheme: _isDarkTheme,
+                  changeTheme: changeTheme,
+                  changeMode: changeMode,
                 );
         },
       ),
