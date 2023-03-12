@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
 import 'package:mclovin_life_manager/pages/home_page.dart';
+import 'package:mclovin_life_manager/pages/list_page.dart';
 
 import 'firebase_options.dart';
-import 'widgets/scaffolds/home_scaffold.dart';
-import 'widgets/scaffolds/work_scaffold.dart';
 import 'widgets/themes/themes.dart';
 
 const String email = "mathieu.ford@gmail.com";
@@ -47,7 +46,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isWorkMode = false;
   bool _isDarkTheme = false;
 
   @override
@@ -73,10 +71,16 @@ class _MyAppState extends State<MyApp> {
           initialRoute: "/",
           routes: {
             "/": (context) => HomePage(
-                isDarkTheme: _isDarkTheme,
-                changeTheme: changeTheme,
-                firebaseAuth: widget.firebaseAuth,
-                firestore: widget.firestore)
+                  isDarkTheme: _isDarkTheme,
+                  changeTheme: changeTheme,
+                  firebaseAuth: widget.firebaseAuth,
+                  firestore: widget.firestore,
+                ),
+            "/list": (context) => ListPage(
+                  isDarkTheme: _isDarkTheme,
+                  firebaseAuth: widget.firebaseAuth,
+                  firestore: widget.firestore,
+                ),
           },
         );
       },
