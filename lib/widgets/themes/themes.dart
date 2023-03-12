@@ -11,6 +11,11 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: _lightThemeColor,
   ),
   brightness: Brightness.light,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: _lightThemeColor,
+    ),
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -21,4 +26,9 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: _darkThemeColor,
   ),
   brightness: Brightness.dark,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: _darkThemeColor,
+    ),
+  ),
 );
