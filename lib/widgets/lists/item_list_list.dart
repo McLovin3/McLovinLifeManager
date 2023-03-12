@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/item_list.dart';
 import '../../widgets/other/loading_widget.dart';
+import '../forms/text_input_dialog.dart';
 
 class ItemListList extends StatefulWidget {
   final FirebaseFirestore firestore;
@@ -48,6 +49,9 @@ class _ItemListListState extends State<ItemListList> {
                 return ListTile(
                   key: Key(itemList.id.toString()),
                   title: Text(itemList.title),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/list", arguments: itemList);
+                  },
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -78,18 +82,26 @@ class _ItemListListState extends State<ItemListList> {
               itemCount: _itemLists.length);
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => showDialog(
-      //       barrierDismissible: true,
-      //       context: context,
-      //       builder: (context) => BirthdayFormDialog(
-      //             refreshBirthdays: () => setState(() {}),
-      //             firestore: widget.firestore,
-      //             firebaseAuth: widget.firebaseAuth,
-      //           )),
-      //   child: const Icon(Icons.add),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (context) => TextInputDialog(
+            hintText: "Name",
+            onSubmit: (String text) {
+              widget.firestore.collection("itemlists").add({
+                "title": text,
+                "ownerId": widget.firebaseAuth.currentUser!.uid,
+                "items": []
+              });
+              setState(() => {});
+            },
+            title: "Add a new list",
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
