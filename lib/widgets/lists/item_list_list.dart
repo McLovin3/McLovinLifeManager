@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mclovin_life_manager/model/item_list.dart';
 
-import '../widgets/other/loading_widget.dart';
+import '../../model/item_list.dart';
+import '../../widgets/other/loading_widget.dart';
 
-class ListPage extends StatefulWidget {
+class ItemListList extends StatefulWidget {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
-  const ListPage(
+  const ItemListList(
       {required this.firestore, required this.firebaseAuth, Key? key})
       : super(key: key);
 
   @override
-  State<ListPage> createState() => _ListPageState();
+  State<ItemListList> createState() => _ItemListListState();
 }
 
-class _ListPageState extends State<ListPage> {
+class _ItemListListState extends State<ItemListList> {
   List<ItemList> _itemLists = [];
 
   @override

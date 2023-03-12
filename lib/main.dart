@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
-import 'package:mclovin_life_manager/widgets/other/home_scaffold.dart';
-import 'package:mclovin_life_manager/widgets/other/work_scaffold.dart';
-import 'package:mclovin_life_manager/widgets/themes/themes.dart';
+
 import 'firebase_options.dart';
+import 'widgets/scaffolds/home_scaffold.dart';
+import 'widgets/scaffolds/work_scaffold.dart';
+import 'widgets/themes/themes.dart';
 
 const String email = "mathieu.ford@gmail.com";
 const String password = "password";

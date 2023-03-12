@@ -2,24 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mclovin_life_manager/widgets/other/loading_widget.dart';
 
-import '../model/birthday.dart';
-import '../widgets/forms/birthday_form_dialog.dart';
+import '../../model/birthday.dart';
+import '../../widgets/forms/birthday_form_dialog.dart';
+import '../other/loading_widget.dart';
 
-class BirthdayPage extends StatefulWidget {
+class BirthdayList extends StatefulWidget {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
-  const BirthdayPage(
+  const BirthdayList(
       {required this.firestore, required this.firebaseAuth, Key? key})
       : super(key: key);
 
   @override
-  State<BirthdayPage> createState() => _BirthdayPageState();
+  State<BirthdayList> createState() => _BirthdayListState();
 }
 
-class _BirthdayPageState extends State<BirthdayPage> {
+class _BirthdayListState extends State<BirthdayList> {
   List<Birthday> _birthdays = [];
 
   @override

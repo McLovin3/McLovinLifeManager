@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mclovin_life_manager/model/todo.dart';
-import 'package:mclovin_life_manager/widgets/other/loading_widget.dart';
 
-import '../widgets/forms/todo_form_dialog.dart';
+import '../../model/todo.dart';
+import '../../widgets/forms/todo_form_dialog.dart';
+import '../other/loading_widget.dart';
 
-class TodoPage extends StatefulWidget {
+class TodoList extends StatefulWidget {
   final bool isWorkMode;
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
-  const TodoPage({
+  const TodoList({
     required this.isWorkMode,
     required this.firestore,
     required this.firebaseAuth,
@@ -20,10 +20,10 @@ class TodoPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _TodoPageState();
+  State<StatefulWidget> createState() => _TodoListState();
 }
 
-class _TodoPageState extends State<TodoPage> {
+class _TodoListState extends State<TodoList> {
   List<Todo> _todos = [];
 
   @override

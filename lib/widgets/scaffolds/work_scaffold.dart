@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../pages/todo_page.dart';
+import '../lists/todo_list.dart';
 
 class WorkScaffold extends StatefulWidget {
   final bool isDarkTheme;
@@ -41,7 +41,7 @@ class _WorkScaffoldState extends State<WorkScaffold> {
           )
         ],
       ),
-      body: TodoPage(
+      body: TodoList(
         isWorkMode: true,
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,

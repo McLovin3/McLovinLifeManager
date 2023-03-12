@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../pages/birthday_page.dart';
-import '../../pages/list_page.dart';
-import '../../pages/todo_page.dart';
+import '../lists/birthday_list.dart';
+import '../lists/item_list_list.dart';
+import '../lists/todo_list.dart';
 
 class HomeScaffold extends StatefulWidget {
   final bool isDarkTheme;
@@ -33,16 +33,16 @@ class _HomeScaffoldState extends State<HomeScaffold> {
   @override
   void initState() {
     pages = [
-      TodoPage(
+      TodoList(
         isWorkMode: false,
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
       ),
-      BirthdayPage(
+      BirthdayList(
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
       ),
-      ListPage(
+      ItemListList(
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
       ),

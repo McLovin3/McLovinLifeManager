@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/main.dart';
-import 'package:mclovin_life_manager/pages/birthday_page.dart';
 
-import 'package:mclovin_life_manager/pages/todo_page.dart';
+import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
+import 'package:mclovin_life_manager/widgets/lists/todo_list.dart';
 
 Future<void> main() async {
   // Initialize Firebase Auth
@@ -61,7 +61,7 @@ Future<void> main() async {
   testWidgets("Shows todo test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: TodoPage(
+        home: TodoList(
           firestore: firestore,
           firebaseAuth: auth,
           isWorkMode: false,
@@ -74,7 +74,7 @@ Future<void> main() async {
   testWidgets("Remove todo test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: TodoPage(
+        home: TodoList(
           firestore: firestore,
           firebaseAuth: auth,
           isWorkMode: false,
@@ -92,7 +92,7 @@ Future<void> main() async {
   testWidgets("Add todo test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: TodoPage(
+        home: TodoList(
             firestore: firestore, firebaseAuth: auth, isWorkMode: false)));
     await tester.pump();
 
@@ -110,7 +110,7 @@ Future<void> main() async {
   testWidgets("Shows birthday test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
+        home: BirthdayList(firestore: firestore, firebaseAuth: auth)));
     await tester.pump();
 
     expect(find.text("Mathieu Ford"), findsOneWidget);
@@ -120,7 +120,7 @@ Future<void> main() async {
   testWidgets("Remove birthday test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
+        home: BirthdayList(firestore: firestore, firebaseAuth: auth)));
     await tester.pump();
 
     await tester.tap(find.byIcon(Icons.close));
@@ -134,7 +134,7 @@ Future<void> main() async {
   testWidgets("Add birthday test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: BirthdayPage(firestore: firestore, firebaseAuth: auth)));
+        home: BirthdayList(firestore: firestore, firebaseAuth: auth)));
     await tester.pump();
 
     await tester.tap(find.byType(FloatingActionButton));
