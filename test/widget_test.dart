@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/main.dart';
 
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
+import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/todo_list.dart';
 
 Future<void> main() async {
@@ -39,6 +40,12 @@ Future<void> main() async {
     "name": "Mathieu Ford",
     "date": "2002-10-11",
     "ownerId": "123456",
+  });
+  await firestore.collection("itemlists").add({
+    "name": "Mathieu Ford",
+    "ownerId": "123456",
+    "title": "List of stuff",
+    "items": ["item1"]
   });
 
   testWidgets("Both modes test", (WidgetTester tester) async {
@@ -189,5 +196,109 @@ Future<void> main() async {
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.nightlight), findsOneWidget);
+  });
+
+  testWidgets("show lists tests", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: ItemListList(firestore: firestore, firebaseAuth: auth)));
+    await tester.pump();
+
+    expect(find.text("List of stuff"), findsOneWidget);
+  });
+
+  testWidgets("show items in list test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.list_alt));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("List of stuff"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("item1"), findsOneWidget);
+  });
+
+  testWidgets("delete list item test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.list_alt));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("List of stuff"));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pump(kDoubleTapMinTime);
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.text("item1"), findsNothing);
+  });
+
+  testWidgets("add list item test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.list_alt));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("List of stuff"));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(const Key("text")), "Item2");
+    await tester.tap(find.text("Submit"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Item2"), findsOneWidget);
+  });
+
+  testWidgets("delete list tests", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: ItemListList(firestore: firestore, firebaseAuth: auth)));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pump(kDoubleTapMinTime);
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.text("List of stuff"), findsNothing);
+  });
+
+  testWidgets("add list test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.list_alt));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(const Key("text")), "Second list");
+    await tester.tap(find.text("Submit"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Second list"), findsOneWidget);
   });
 }
