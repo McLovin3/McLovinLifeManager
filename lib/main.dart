@@ -77,7 +77,6 @@ class _MyAppState extends State<MyApp> {
                   firestore: widget.firestore,
                 ),
             "/list": (context) => ListPage(
-                  isDarkTheme: _isDarkTheme,
                   firebaseAuth: widget.firebaseAuth,
                   firestore: widget.firestore,
                 ),
