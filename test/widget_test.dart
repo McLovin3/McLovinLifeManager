@@ -42,10 +42,14 @@ Future<void> main() async {
     "ownerId": "123456",
   });
   await firestore.collection("itemlists").add({
-    "name": "Mathieu Ford",
     "ownerId": "123456",
     "title": "List of stuff",
     "items": ["item1"]
+  });
+  await firestore.collection("journals").add({
+    "ownerId": "123456",
+    "text": "Today I did super cool stuff",
+    "writeDate": "2023-02-17"
   });
 
   testWidgets("Both modes test", (WidgetTester tester) async {
@@ -300,5 +304,77 @@ Future<void> main() async {
     await tester.pumpAndSettle();
 
     expect(find.text("Second list"), findsOneWidget);
+  });
+
+  testWidgets("See journals test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.book));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Feb 17"), findsOneWidget);
+  });
+
+  testWidgets("See journal entry test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.book));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text("Feb 17"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Today I did super cool stuff"), findsOneWidget);
+  });
+
+  testWidgets("Delete a journal test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.book));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pump(kDoubleTapMinTime);
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Feb 17"), findsNothing);
+  });
+
+  testWidgets("Add journal test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.book));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+        find.byKey(const Key("text")), "I did cool things today");
+    await tester.tap(find.text("Submit"));
+    await tester.pumpAndSettle();
+
+    expect(find.text(DateFormat.MMMd().format(DateTime.now())), findsOneWidget);
   });
 }
