@@ -78,6 +78,7 @@ class _ListPageState extends State<ListPage> {
               });
             },
             title: "Add a new item",
+            maxLines: 1,
           ),
         ),
       ),

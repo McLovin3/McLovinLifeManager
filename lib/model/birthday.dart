@@ -28,8 +28,9 @@ class Birthday {
     for (int i = 0; i < birthdays.length; i++) {
       Birthday birthday = birthdays.elementAt(i);
 
-      if (birthday.date.month <= currentDate.month &&
-          birthday.date.day < currentDate.day) {
+      if (birthday.date.month < currentDate.month ||
+          (birthday.date.month == currentDate.month &&
+              birthday.date.day < currentDate.day)) {
         cutOffIndex++;
       }
     }

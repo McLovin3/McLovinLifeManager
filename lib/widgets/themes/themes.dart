@@ -16,6 +16,10 @@ ThemeData lightTheme = ThemeData(
       backgroundColor: _lightThemeColor,
     ),
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: _lightThemeColor,
+    unselectedItemColor: Colors.grey,
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -30,5 +34,9 @@ ThemeData darkTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: _darkThemeColor,
     ),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: _darkThemeColor,
+    unselectedItemColor: Colors.grey,
   ),
 );

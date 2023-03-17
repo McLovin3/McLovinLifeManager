@@ -1,35 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mclovin_life_manager/model/journal.dart';
 
-import '../../model/item_list.dart';
 import '../../widgets/other/loading_widget.dart';
 import '../forms/text_input_dialog.dart';
 
-class ItemListList extends StatefulWidget {
+class JournalList extends StatefulWidget {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
 
-  const ItemListList(
+  const JournalList(
       {required this.firestore, required this.firebaseAuth, Key? key})
       : super(key: key);
 
   @override
-  State<ItemListList> createState() => _ItemListListState();
+  State<JournalList> createState() => _JournalListState();
 }
 
-class _ItemListListState extends State<ItemListList> {
-  List<ItemList> _itemLists = [];
+class _JournalListState extends State<JournalList> {
+  List<Journal> _journalList = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Lists")),
+        title: const Center(child: Text("Journal")),
       ),
       body: FutureBuilder(
         future: widget.firestore
-            .collection("itemlists")
+            .collection("journals")
             .where("ownerId", isEqualTo: widget.firebaseAuth.currentUser!.uid)
             .get(),
         builder: (context, snapshot) {
@@ -37,20 +38,22 @@ class _ItemListListState extends State<ItemListList> {
             return const LoadingWidget();
           }
 
-          _itemLists = snapshot.data!.docs
-              .map((e) => ItemList.fromQueryDocumentSnapshot(e))
+          _journalList = snapshot.data!.docs
+              .map((e) => Journal.fromQueryDocumentSnapshot(e))
               .toList();
+          _journalList.sort((a, b) => b.writeDate.compareTo(a.writeDate));
 
           return ListView.separated(
               padding: const EdgeInsets.all(8),
               itemBuilder: (_, index) {
-                ItemList itemList = _itemLists[index];
+                Journal journal = _journalList[index];
 
                 return ListTile(
-                  key: Key(itemList.id.toString()),
-                  title: Text(itemList.title),
+                  key: Key(journal.id.toString()),
+                  title: Text(DateFormat.MMMd().format(journal.writeDate)),
                   onTap: () {
-                    Navigator.pushNamed(context, "/list", arguments: itemList);
+                    Navigator.pushNamed(context, "/journal",
+                        arguments: journal);
                   },
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -58,11 +61,11 @@ class _ItemListListState extends State<ItemListList> {
                       InkWell(
                         onDoubleTap: () {
                           widget.firestore
-                              .collection("itemlists")
-                              .doc(itemList.id)
+                              .collection("journals")
+                              .doc(journal.id)
                               .delete();
                           setState(() {
-                            _itemLists.removeAt(index);
+                            _journalList.removeAt(index);
                           });
                         },
                         child: const Padding(
@@ -79,7 +82,7 @@ class _ItemListListState extends State<ItemListList> {
                 );
               },
               separatorBuilder: (BuildContext _, int __) => const Divider(),
-              itemCount: _itemLists.length);
+              itemCount: _journalList.length);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -88,17 +91,17 @@ class _ItemListListState extends State<ItemListList> {
           barrierDismissible: true,
           context: context,
           builder: (context) => TextInputDialog(
-            hintText: "Name",
+            hintText: "text",
             onSubmit: (String text) {
-              widget.firestore.collection("itemlists").add({
-                "title": text,
+              widget.firestore.collection("journals").add({
+                "text": text,
                 "ownerId": widget.firebaseAuth.currentUser!.uid,
-                "items": []
+                "writeDate": DateTime.now().toString().split(" ")[0],
               });
               setState(() => {});
             },
-            title: "Add a new list",
-            maxLines: 1,
+            title: "Write a new journal entry",
+            maxLines: 10,
           ),
         ),
       ),
