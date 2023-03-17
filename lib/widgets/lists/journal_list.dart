@@ -41,6 +41,7 @@ class _JournalListState extends State<JournalList> {
           _journalList = snapshot.data!.docs
               .map((e) => Journal.fromQueryDocumentSnapshot(e))
               .toList();
+          _journalList.sort((a, b) => b.writeDate.compareTo(a.writeDate));
 
           return ListView.separated(
               padding: const EdgeInsets.all(8),
@@ -50,6 +51,10 @@ class _JournalListState extends State<JournalList> {
                 return ListTile(
                   key: Key(journal.id.toString()),
                   title: Text(DateFormat.MMMd().format(journal.writeDate)),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/journal",
+                        arguments: journal);
+                  },
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

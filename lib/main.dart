@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
 import 'package:mclovin_life_manager/pages/home_page.dart';
+import 'package:mclovin_life_manager/pages/journal_page.dart';
 import 'package:mclovin_life_manager/pages/list_page.dart';
 
 import 'firebase_options.dart';
@@ -77,6 +78,10 @@ class _MyAppState extends State<MyApp> {
                   firestore: widget.firestore,
                 ),
             "/list": (context) => ListPage(
+                  firebaseAuth: widget.firebaseAuth,
+                  firestore: widget.firestore,
+                ),
+            "/journal": (context) => JournalPage(
                   firebaseAuth: widget.firebaseAuth,
                   firestore: widget.firestore,
                 ),
