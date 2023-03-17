@@ -101,6 +101,7 @@ class _JournalListState extends State<JournalList> {
               setState(() => {});
             },
             title: "Write a new journal entry",
+            maxLines: 10,
           ),
         ),
       ),

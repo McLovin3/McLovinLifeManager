@@ -4,10 +4,12 @@ class TextInputDialog extends StatefulWidget {
   final String title;
   final String hintText;
   final Function onSubmit;
+  final int maxLines;
 
   const TextInputDialog(
       {required this.title,
       super.key,
+      required this.maxLines,
       required this.hintText,
       required this.onSubmit});
 
@@ -31,6 +33,7 @@ class _TextInputDialogState extends State<TextInputDialog> {
             children: [
               TextFormField(
                 key: const Key("text"),
+                maxLines: widget.maxLines,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   hintText: widget.hintText,

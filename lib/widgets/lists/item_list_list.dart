@@ -98,6 +98,7 @@ class _ItemListListState extends State<ItemListList> {
               setState(() => {});
             },
             title: "Add a new list",
+            maxLines: 1,
           ),
         ),
       ),
