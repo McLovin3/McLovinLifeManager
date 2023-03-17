@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mclovin_life_manager/widgets/lists/journal_list.dart';
 
 import '../lists/birthday_list.dart';
 import '../lists/item_list_list.dart';
@@ -46,6 +47,10 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
       ),
+      JournalList(
+        firestore: widget.firestore,
+        firebaseAuth: widget.firebaseAuth,
+      )
     ];
     super.initState();
   }
@@ -71,7 +76,9 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         currentIndex: _selectedPage,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(
+              Icons.list,
+            ),
             label: "Todo",
           ),
           BottomNavigationBarItem(
@@ -81,6 +88,10 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt),
             label: "Lists",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: "Journal",
           ),
         ],
         onTap: (index) {
