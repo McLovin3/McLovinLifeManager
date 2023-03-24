@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/main.dart';
+import 'package:mclovin_life_manager/services/notifications_service.dart';
 
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
@@ -121,7 +122,11 @@ Future<void> main() async {
   testWidgets("Shows birthday test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: BirthdayList(firestore: firestore, firebaseAuth: auth)));
+        home: BirthdayList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+        )));
     await tester.pump();
 
     expect(find.text("Mathieu Ford"), findsOneWidget);
@@ -131,7 +136,11 @@ Future<void> main() async {
   testWidgets("Remove birthday test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: BirthdayList(firestore: firestore, firebaseAuth: auth)));
+        home: BirthdayList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+        )));
     await tester.pump();
 
     await tester.tap(find.byIcon(Icons.close));
@@ -145,7 +154,11 @@ Future<void> main() async {
   testWidgets("Add birthday test", (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
-        home: BirthdayList(firestore: firestore, firebaseAuth: auth)));
+        home: BirthdayList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+        )));
     await tester.pump();
 
     await tester.tap(find.byType(FloatingActionButton));

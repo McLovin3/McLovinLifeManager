@@ -43,6 +43,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       BirthdayList(
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
+        enableNotifications: true,
       ),
       ItemListList(
         firebaseAuth: widget.firebaseAuth,

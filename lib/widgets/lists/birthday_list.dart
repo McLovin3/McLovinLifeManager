@@ -11,9 +11,13 @@ import '../other/loading_widget.dart';
 class BirthdayList extends StatefulWidget {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
+  final bool enableNotifications;
 
   const BirthdayList(
-      {required this.firestore, required this.firebaseAuth, Key? key})
+      {required this.firestore,
+      required this.firebaseAuth,
+      required this.enableNotifications,
+      Key? key})
       : super(key: key);
 
   @override
@@ -44,8 +48,10 @@ class _BirthdayListState extends State<BirthdayList> {
               .toList();
           Birthday.sortBirthdays(_birthdays);
 
-          for (Birthday birthday in _birthdays) {
-            createBirthdayNotification(birthday);
+          if (widget.enableNotifications) {
+            for (Birthday birthday in _birthdays) {
+              createBirthdayNotification(birthday);
+            }
           }
 
           return ListView.separated(
