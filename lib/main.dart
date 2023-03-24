@@ -6,6 +6,7 @@ import 'package:light/light.dart';
 import 'package:mclovin_life_manager/pages/home_page.dart';
 import 'package:mclovin_life_manager/pages/journal_page.dart';
 import 'package:mclovin_life_manager/pages/list_page.dart';
+import 'package:mclovin_life_manager/services/notifications_service.dart';
 
 import 'firebase_options.dart';
 import 'widgets/themes/themes.dart';
@@ -16,6 +17,7 @@ const int lightThreshhold = 25;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationsService().init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
