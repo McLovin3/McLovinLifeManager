@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mclovin_life_manager/services/notifications_service.dart';
 
 import '../../model/birthday.dart';
 import '../../widgets/forms/birthday_form_dialog.dart';
@@ -42,6 +43,10 @@ class _BirthdayListState extends State<BirthdayList> {
               .map((e) => Birthday.fromQueryDocumentSnapshot(e))
               .toList();
           Birthday.sortBirthdays(_birthdays);
+
+          for (Birthday birthday in _birthdays) {
+            createBirthdayNotification(birthday);
+          }
 
           return ListView.separated(
               padding: const EdgeInsets.all(8),
@@ -94,6 +99,15 @@ class _BirthdayListState extends State<BirthdayList> {
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  void createBirthdayNotification(Birthday birthday) async {
+    await NotificationsService().createNotification(
+      id: birthday.id.hashCode,
+      title: "Birthday",
+      body: "It's ${birthday.name}'s birthday today!",
+      dateTime: birthday.date.add(const Duration(hours: 12)),
     );
   }
 }

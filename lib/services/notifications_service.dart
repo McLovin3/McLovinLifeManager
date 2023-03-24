@@ -21,6 +21,7 @@ class NotificationsService {
       required String title,
       required String body,
       required DateTime dateTime}) async {
+    _localNotifications.cancel(id);
     final scheduleTime = timezone.TZDateTime.fromMillisecondsSinceEpoch(
         timezone.local, dateTime.millisecondsSinceEpoch);
 
