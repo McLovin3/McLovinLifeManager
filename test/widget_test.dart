@@ -390,4 +390,21 @@ Future<void> main() async {
 
     expect(find.text(DateFormat.MMMd().format(DateTime.now())), findsOneWidget);
   });
+
+  testWidgets("breathing aid test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.nature));
+    await tester.pumpAndSettle();
+
+    expect(find.text("60"), findsOneWidget);
+
+    await tester.tap(find.text("Start"));
+    await tester.pump();
+  });
 }

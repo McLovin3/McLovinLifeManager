@@ -44,65 +44,68 @@ class _BreathingAidState extends State<BreathingAid>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Row(
       children: [
-        Center(
-          child: Stack(
-            alignment: Alignment.center,
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 300,
-                height: 300,
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(150),
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 300,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(150),
+                      ),
+                    ),
+                    Center(
+                      child: AnimatedBuilder(
+                        animation: _controller,
+                        child: Container(
+                          width: 300,
+                          height: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[400],
+                            borderRadius: BorderRadius.circular(150),
+                          ),
+                        ),
+                        builder: (context, child) {
+                          return Transform.scale(
+                            scale: 1 - _controller.value,
+                            child: child,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Center(
-                child: AnimatedBuilder(
-                  animation: _controller,
-                  child: Container(
-                    width: 300,
-                    height: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[400],
-                      borderRadius: BorderRadius.circular(150),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 100.0),
+                  child: Text(
+                    timer.toString(),
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: 1 - _controller.value,
-                      child: child,
-                    );
-                  },
                 ),
               ),
+              ElevatedButton(
+                onPressed: _isRunning ? null : start,
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(
+                    const Size(200, 50),
+                  ),
+                ),
+                child: const Text("Start"),
+              ),
             ],
-          ),
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 100.0),
-            child: Text(
-              timer.toString(),
-              style: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 25.0),
-          child: ElevatedButton(
-            onPressed: _isRunning ? null : start,
-            style: ButtonStyle(
-              minimumSize: MaterialStateProperty.all(
-                const Size(200, 50),
-              ),
-            ),
-            child: const Text("Start"),
           ),
         ),
       ],
