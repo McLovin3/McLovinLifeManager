@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mclovin_life_manager/widgets/lists/journal_list.dart';
 
 import '../lists/birthday_list.dart';
 import '../lists/item_list_list.dart';
+import '../lists/journal_list.dart';
 import '../lists/todo_list.dart';
+import '../other/breathing_aid.dart';
 
 class HomeScaffold extends StatefulWidget {
   final bool isDarkTheme;
@@ -50,7 +51,8 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       JournalList(
         firestore: widget.firestore,
         firebaseAuth: widget.firebaseAuth,
-      )
+      ),
+      const BreathingAid(),
     ];
     super.initState();
   }
@@ -92,6 +94,10 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: "Journal",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.nature),
+            label: "Breathing Aid",
           ),
         ],
         onTap: (index) {
