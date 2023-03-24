@@ -42,6 +42,7 @@ dependencies:
   firebase_auth_mocks: ^0.10.3
   intl: ^0.17.0
   light: ^2.1.0
+  quiver: ^3.2.1
 
 dev_dependencies:
   flutter_test:
