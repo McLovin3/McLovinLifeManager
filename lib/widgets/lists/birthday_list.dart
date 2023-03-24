@@ -109,6 +109,21 @@ class _BirthdayListState extends State<BirthdayList> {
   }
 
   void createBirthdayNotification(Birthday birthday) async {
+    final currentDate = DateTime.now();
+
+    birthday.date = DateTime(
+      currentDate.year,
+      birthday.date.month,
+      birthday.date.day,
+    );
+    if (birthday.date.isBefore(currentDate)) {
+      birthday.date = DateTime(
+        currentDate.year + 1,
+        birthday.date.month,
+        birthday.date.day,
+      );
+    }
+
     await NotificationsService().createNotification(
       id: birthday.id.hashCode,
       title: "Birthday",
