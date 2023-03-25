@@ -15,7 +15,7 @@ class _BreathingAidState extends State<BreathingAid>
     duration: const Duration(seconds: 4),
     vsync: this,
   );
-  late CountdownTimer _countdownTimer;
+  CountdownTimer? _countdownTimer;
   bool _isRunning = false;
   late int timer = breathingTime;
 
@@ -108,7 +108,7 @@ class _BreathingAidState extends State<BreathingAid>
 
   @override
   void dispose() {
-    _countdownTimer.cancel();
+    _countdownTimer?.cancel();
     _controller.stop();
     _controller.dispose();
     super.dispose();

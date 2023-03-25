@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/main.dart';
-import 'package:mclovin_life_manager/services/notifications_service.dart';
 
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
