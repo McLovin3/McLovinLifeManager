@@ -1,6 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:mclovin_life_manager/widgets/other/sound_button.dart';
+
+import 'sound_button.dart';
 
 class FidgetZone extends StatefulWidget {
   const FidgetZone({super.key});
@@ -10,6 +10,8 @@ class FidgetZone extends StatefulWidget {
 }
 
 class _FidgetZoneState extends State<FidgetZone> {
+  double _sliderValue = 0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,6 +49,17 @@ class _FidgetZoneState extends State<FidgetZone> {
               ),
             ],
           ),
+          Slider(
+            value: _sliderValue,
+            
+            onChanged: (value) {
+              setState(
+                () {
+                  _sliderValue = value;
+                },
+              );
+            },
+          )
         ],
       ),
     );
