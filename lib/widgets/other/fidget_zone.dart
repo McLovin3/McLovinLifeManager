@@ -15,6 +15,7 @@ class _FidgetZoneState extends State<FidgetZone> {
   // ignore: unused_field
   double _sliderValue = 0;
   final audioplayer = AudioPlayer();
+  final clickRate = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +74,9 @@ class _FidgetZoneState extends State<FidgetZone> {
                   trackWidth: 20,
                 ),
               ),
-              initialValue: 50,
               onChange: (double value) {
                 setState(() {
-                  if (_sliderValue.round() % 5 == 0) {
+                  if (_sliderValue.round() % clickRate == 0) {
                     audioplayer.play(AssetSource("click.mp3"));
                   }
                   _sliderValue = value;
