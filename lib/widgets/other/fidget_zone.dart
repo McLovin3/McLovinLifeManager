@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -13,6 +14,7 @@ class FidgetZone extends StatefulWidget {
 class _FidgetZoneState extends State<FidgetZone> {
   // ignore: unused_field
   double _sliderValue = 0;
+  final audioplayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +76,9 @@ class _FidgetZoneState extends State<FidgetZone> {
               initialValue: 50,
               onChange: (double value) {
                 setState(() {
+                  if (_sliderValue.round() % 5 == 0) {
+                    audioplayer.play(AssetSource("click.mp3"));
+                  }
                   _sliderValue = value;
                 });
               },
@@ -82,5 +87,11 @@ class _FidgetZoneState extends State<FidgetZone> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    audioplayer.dispose();
+    super.dispose();
   }
 }
