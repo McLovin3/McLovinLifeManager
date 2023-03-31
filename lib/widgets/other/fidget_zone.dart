@@ -21,13 +21,13 @@ class _FidgetZoneState extends State<FidgetZone> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
               SoundButton(
-                soundOnPress: "clickStart.mp3",
-                soundOnRelease: "clickEnd.mp3",
+                soundOnPress: "clickStart1.mp3",
+                soundOnRelease: "clickEnd1.mp3",
                 buttonColor: Colors.blue,
               ),
               SoundButton(
-                soundOnPress: "clickStart.mp3",
-                soundOnRelease: "clickEnd.mp3",
+                soundOnPress: "clickStart2.mp3",
+                soundOnRelease: "clickEnd2.mp3",
                 buttonColor: Colors.red,
               ),
             ],
@@ -36,13 +36,13 @@ class _FidgetZoneState extends State<FidgetZone> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
               SoundButton(
-                soundOnPress: "clickStart.mp3",
-                soundOnRelease: "clickEnd.mp3",
+                soundOnPress: "clickStart3.mp3",
+                soundOnRelease: "clickEnd3.mp3",
                 buttonColor: Colors.green,
               ),
               SoundButton(
-                soundOnPress: "clickStart.mp3",
-                soundOnRelease: "clickEnd.mp3",
+                soundOnPress: "clickStart4.mp3",
+                soundOnRelease: "clickEnd4.mp3",
                 buttonColor: Colors.yellow,
               ),
             ],
