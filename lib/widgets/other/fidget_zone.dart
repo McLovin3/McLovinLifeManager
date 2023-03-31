@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:mclovin_life_manager/widgets/other/sound_button.dart';
 
 class FidgetZone extends StatefulWidget {
   const FidgetZone({super.key});
@@ -9,47 +10,45 @@ class FidgetZone extends StatefulWidget {
 }
 
 class _FidgetZoneState extends State<FidgetZone> {
-  static const clickStart = "clickStart.mp3";
-  static const clickEnd = "clickEnd.mp3";
-  final audioPlayer = AudioPlayer();
-  double circleSize = 150;
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: GestureDetector(
-            onTapDown: (details) {
-              audioPlayer.play(AssetSource(clickStart));
-              setState(() {
-                circleSize = 125;
-              });
-            },
-            onTapUp: (details) {
-              audioPlayer.play(AssetSource(clickEnd));
-              setState(() {
-                circleSize = 100;
-              });
-            },
-            child: Container(
-              width: circleSize,
-              height: circleSize,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(150),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              SoundButton(
+                soundOnPress: "clickStart.mp3",
+                soundOnRelease: "clickEnd.mp3",
+                buttonColor: Colors.blue,
               ),
-            ),
+              SoundButton(
+                soundOnPress: "clickStart.mp3",
+                soundOnRelease: "clickEnd.mp3",
+                buttonColor: Colors.red,
+              ),
+            ],
           ),
-        ),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              SoundButton(
+                soundOnPress: "clickStart.mp3",
+                soundOnRelease: "clickEnd.mp3",
+                buttonColor: Colors.green,
+              ),
+              SoundButton(
+                soundOnPress: "clickStart.mp3",
+                soundOnRelease: "clickEnd.mp3",
+                buttonColor: Colors.yellow,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
   }
 }
