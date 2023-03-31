@@ -28,11 +28,13 @@ class _FidgetZoneState extends State<FidgetZone> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
               SoundButton(
+                key: Key("Button1"),
                 soundOnPress: "clickStart1.mp3",
                 soundOnRelease: "clickEnd1.mp3",
                 buttonColor: Colors.blue,
               ),
               SoundButton(
+                key: Key("Button2"),
                 soundOnPress: "clickStart2.mp3",
                 soundOnRelease: "clickEnd2.mp3",
                 buttonColor: Colors.red,
@@ -43,11 +45,13 @@ class _FidgetZoneState extends State<FidgetZone> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
               SoundButton(
+                key: Key("Button3"),
                 soundOnPress: "clickStart3.mp3",
                 soundOnRelease: "clickEnd3.mp3",
                 buttonColor: Colors.green,
               ),
               SoundButton(
+                key: Key("Button4"),
                 soundOnPress: "clickStart4.mp3",
                 soundOnRelease: "clickEnd4.mp3",
                 buttonColor: Colors.yellow,
@@ -56,6 +60,7 @@ class _FidgetZoneState extends State<FidgetZone> {
           ),
           Expanded(
             child: SleekCircularSlider(
+              key: const Key("Slider"),
               appearance: CircularSliderAppearance(
                 infoProperties: InfoProperties(
                   mainLabelStyle: const TextStyle(color: Colors.white),

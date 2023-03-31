@@ -9,6 +9,7 @@ import 'package:mclovin_life_manager/main.dart';
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/todo_list.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 Future<void> main() async {
   // Initialize Firebase Auth
@@ -405,5 +406,23 @@ Future<void> main() async {
 
     await tester.tap(find.text("Start"));
     await tester.pump();
+  });
+
+  testWidgets("fidget zone UI test", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp(
+      firebaseAuth: auth,
+      firestore: firestore,
+      lightLevel: 50,
+    ));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.toys));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key("Button1")), findsOneWidget);
+    expect(find.byKey(const Key("Button2")), findsOneWidget);
+    expect(find.byKey(const Key("Button3")), findsOneWidget);
+    expect(find.byKey(const Key("Button4")), findsOneWidget);
+    expect(find.byKey(const Key("Slider")), findsOneWidget);
   });
 }
