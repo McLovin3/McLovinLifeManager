@@ -9,7 +9,6 @@ import 'package:mclovin_life_manager/main.dart';
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/todo_list.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 Future<void> main() async {
   // Initialize Firebase Auth
