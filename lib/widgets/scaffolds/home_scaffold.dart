@@ -7,6 +7,7 @@ import '../lists/item_list_list.dart';
 import '../lists/journal_list.dart';
 import '../lists/todo_list.dart';
 import '../other/breathing_aid.dart';
+import '../other/fidget_zone.dart';
 
 class HomeScaffold extends StatefulWidget {
   final bool isDarkTheme;
@@ -54,6 +55,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         firebaseAuth: widget.firebaseAuth,
       ),
       const BreathingAid(),
+      const FidgetZone(),
     ];
     super.initState();
   }
@@ -99,6 +101,10 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           BottomNavigationBarItem(
             icon: Icon(Icons.nature),
             label: "Breathing Aid",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.toys),
+            label: "Fidget",
           ),
         ],
         onTap: (index) {
