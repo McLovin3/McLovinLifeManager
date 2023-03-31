@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import 'sound_button.dart';
 
@@ -10,6 +11,7 @@ class FidgetZone extends StatefulWidget {
 }
 
 class _FidgetZoneState extends State<FidgetZone> {
+  // ignore: unused_field
   double _sliderValue = 0;
 
   @override
@@ -49,16 +51,33 @@ class _FidgetZoneState extends State<FidgetZone> {
               ),
             ],
           ),
-          Slider(
-            value: _sliderValue,
-            
-            onChanged: (value) {
-              setState(
-                () {
+          Expanded(
+            child: SleekCircularSlider(
+              appearance: CircularSliderAppearance(
+                infoProperties: InfoProperties(
+                  mainLabelStyle: const TextStyle(color: Colors.white),
+                ),
+                size: 300,
+                angleRange: 360,
+                customColors: CustomSliderColors(
+                  progressBarColor: Colors.blue,
+                  trackColor: Colors.blue,
+                  dotColor: Colors.pink,
+                ),
+                customWidths: CustomSliderWidths(
+                  shadowWidth: 0,
+                  handlerSize: 30,
+                  progressBarWidth: 20,
+                  trackWidth: 20,
+                ),
+              ),
+              initialValue: 50,
+              onChange: (double value) {
+                setState(() {
                   _sliderValue = value;
-                },
-              );
-            },
+                });
+              },
+            ),
           )
         ],
       ),
