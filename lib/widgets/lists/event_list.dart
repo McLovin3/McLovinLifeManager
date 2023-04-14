@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mclovin_life_manager/widgets/forms/event_form_dialog.dart';
 
 import '../../model/event.dart';
 import '../other/loading_widget.dart';
@@ -12,12 +13,13 @@ class EventList extends StatefulWidget {
   final bool enableNotifications;
   final bool isWorkMode;
 
-  const EventList(
-      {required this.firestore,
-      required this.firebaseAuth,
-      required this.enableNotifications,
-      required this.isWorkMode,
-      super.key});
+  const EventList({
+    required this.firestore,
+    required this.firebaseAuth,
+    required this.enableNotifications,
+    required this.isWorkMode,
+    super.key,
+  });
 
   @override
   State<EventList> createState() => _EventListState();
@@ -91,6 +93,19 @@ class _EventListState extends State<EventList> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+            barrierDismissible: true,
+            context: context,
+            builder: (context) => EventFormDialog(
+                  refreshEvents: () => setState(() {}),
+                  firestore: widget.firestore,
+                  firebaseAuth: widget.firebaseAuth,
+                  isWorkMode: widget.isWorkMode,
+                )),
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
