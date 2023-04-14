@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../services/notifications_service.dart';
+
 class EventFormDialog extends StatefulWidget {
   final Function refreshEvents;
   final FirebaseFirestore firestore;
@@ -94,25 +96,15 @@ class _EventFormDialogState extends State<EventFormDialog> {
                     initialTime: TimeOfDay.now(),
                   );
                   if (time != null) {
-                    if (time.minute < 10) {
-                      _timeController.text = "${time.hour}:0${time.minute}";
-                    } else {
-                      _timeController.text = "${time.hour}:${time.minute}";
-                    }
+                    _timeController.text =
+                        "${time.hour}:${time.minute < 10 ? "0" : ""}${time.minute}";
                   }
                 },
               ),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      widget.firestore.collection("events").add({
-                        "details": _detailsController.text,
-                        "date":
-                            "${_dateController.text} ${_timeController.text}",
-                        "location": _locationController.text,
-                        "isWork": widget.isWorkMode,
-                        "ownerId": widget.firebaseAuth.currentUser!.uid,
-                      });
+                      createEvent();
                       widget.refreshEvents();
                       Navigator.pop(context);
                     }
@@ -122,6 +114,25 @@ class _EventFormDialogState extends State<EventFormDialog> {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> createEvent() async {
+    final event = await widget.firestore.collection("events").add({
+      "details": _detailsController.text,
+      "date": "${_dateController.text} ${_timeController.text}",
+      "location": _locationController.text,
+      "isWork": widget.isWorkMode,
+      "ownerId": widget.firebaseAuth.currentUser!.uid,
+    });
+
+    NotificationsService().createNotification(
+      id: event.id.hashCode,
+      title: "Appointment Reminder",
+      body: "Your have ${_detailsController.text} in 1 hour ",
+      dateTime:
+          DateTime.parse("${_dateController.text} ${_timeController.text}")
+              .subtract(const Duration(hours: 1)),
     );
   }
 

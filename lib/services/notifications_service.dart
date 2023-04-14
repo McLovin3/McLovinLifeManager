@@ -16,6 +16,10 @@ class NotificationsService {
     );
   }
 
+  Future<void> cancelNotification(int id) async {
+    await _localNotifications.cancel(id);
+  }
+
   Future<void> createNotification(
       {required int id,
       required String title,

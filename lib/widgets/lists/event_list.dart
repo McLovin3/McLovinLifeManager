@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mclovin_life_manager/services/notifications_service.dart';
 import 'package:mclovin_life_manager/widgets/forms/event_form_dialog.dart';
 
 import '../../model/event.dart';
@@ -71,6 +72,8 @@ class _EventListState extends State<EventList> {
                             .collection("events")
                             .doc(event.id)
                             .delete();
+                        NotificationsService()
+                            .cancelNotification(event.id.hashCode);
                         setState(() {
                           _events.removeAt(index);
                         });
