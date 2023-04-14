@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../lists/birthday_list.dart';
+import '../lists/event_list.dart';
 import '../lists/item_list_list.dart';
 import '../lists/journal_list.dart';
 import '../lists/todo_list.dart';
@@ -54,6 +55,12 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         firestore: widget.firestore,
         firebaseAuth: widget.firebaseAuth,
       ),
+      EventList(
+        firestore: widget.firestore,
+        firebaseAuth: widget.firebaseAuth,
+        enableNotifications: true,
+        isWorkMode: false,
+      ),
       const BreathingAid(),
       const FidgetZone(),
     ];
@@ -81,9 +88,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         currentIndex: _selectedPage,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.list,
-            ),
+            icon: Icon(Icons.list),
             label: "Todo",
           ),
           BottomNavigationBarItem(
@@ -97,6 +102,10 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: "Journal",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month),
+            label: "Events",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.nature),

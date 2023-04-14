@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../lists/event_list.dart';
 import '../lists/todo_list.dart';
 
 class WorkScaffold extends StatefulWidget {
@@ -25,6 +26,27 @@ class WorkScaffold extends StatefulWidget {
 }
 
 class _WorkScaffoldState extends State<WorkScaffold> {
+  int _selectedPage = 0;
+  List<Widget> pages = [];
+
+  @override
+  void initState() {
+    pages = [
+      TodoList(
+        isWorkMode: true,
+        firebaseAuth: widget.firebaseAuth,
+        firestore: widget.firestore,
+      ),
+      EventList(
+        firestore: widget.firestore,
+        firebaseAuth: widget.firebaseAuth,
+        enableNotifications: true,
+        isWorkMode: true,
+      ),
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +63,24 @@ class _WorkScaffoldState extends State<WorkScaffold> {
           )
         ],
       ),
-      body: TodoList(
-        isWorkMode: true,
-        firebaseAuth: widget.firebaseAuth,
-        firestore: widget.firestore,
+      body: pages.elementAt(_selectedPage),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedPage,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: "Todo",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month),
+            label: "Events",
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _selectedPage = index;
+          });
+        },
       ),
     );
   }

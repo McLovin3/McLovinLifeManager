@@ -4,14 +4,14 @@ class Event {
   String id;
   String location;
   String details;
-  DateTime dateTime;
+  DateTime date;
   bool isWork;
 
   Event(
     this.id,
     this.location,
     this.details,
-    this.dateTime,
+    this.date,
     this.isWork,
   );
 
@@ -21,7 +21,7 @@ class Event {
       json.id,
       json.data()["location"],
       json.data()["details"],
-      DateTime.parse(json.data()["dateTime"]),
+      DateTime.parse(json.data()["date"]),
       json.data()["isWork"],
     );
   }
