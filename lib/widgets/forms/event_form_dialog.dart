@@ -10,12 +10,14 @@ class EventFormDialog extends StatefulWidget {
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
   final bool isWorkMode;
+  final bool enableNotifications;
 
   const EventFormDialog({
     required this.refreshEvents,
     required this.firebaseAuth,
     required this.firestore,
     required this.isWorkMode,
+    required this.enableNotifications,
     super.key,
   });
 
@@ -49,7 +51,7 @@ class _EventFormDialogState extends State<EventFormDialog> {
           child: Column(
             children: [
               TextFormField(
-                key: const Key("Details"),
+                key: const Key("details"),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   hintText: "Details",
@@ -64,7 +66,7 @@ class _EventFormDialogState extends State<EventFormDialog> {
                 },
               ),
               TextFormField(
-                key: const Key("Location"),
+                key: const Key("location"),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   hintText: "Location",
@@ -126,14 +128,16 @@ class _EventFormDialogState extends State<EventFormDialog> {
       "ownerId": widget.firebaseAuth.currentUser!.uid,
     });
 
-    NotificationsService().createNotification(
-      id: event.id.hashCode,
-      title: "Appointment Reminder",
-      body: "Your have ${_detailsController.text} in 1 hour ",
-      dateTime:
-          DateTime.parse("${_dateController.text} ${_timeController.text}")
-              .subtract(const Duration(hours: 1)),
-    );
+    if (widget.enableNotifications) {
+      NotificationsService().createNotification(
+        id: event.id.hashCode,
+        title: "Appointment Reminder",
+        body: "Your have ${_detailsController.text} in 1 hour ",
+        dateTime:
+            DateTime.parse("${_dateController.text} ${_timeController.text}")
+                .subtract(const Duration(hours: 1)),
+      );
+    }
   }
 
   @override
