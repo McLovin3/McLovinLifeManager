@@ -105,6 +105,7 @@ class _EventListState extends State<EventList> {
                   firestore: widget.firestore,
                   firebaseAuth: widget.firebaseAuth,
                   isWorkMode: widget.isWorkMode,
+                  enableNotifications: widget.enableNotifications,
                 )),
         child: const Icon(Icons.add),
       ),

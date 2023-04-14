@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/main.dart';
 
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
+import 'package:mclovin_life_manager/widgets/lists/event_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/todo_list.dart';
 
@@ -50,6 +51,20 @@ Future<void> main() async {
     "ownerId": "123456",
     "text": "Today I did super cool stuff",
     "writeDate": "2023-02-17"
+  });
+  await firestore.collection("events").add({
+    "ownerId": "123456",
+    "details": "Appointment",
+    "location": "Montreal",
+    "date": "2023-02-20 12:30",
+    "isWork": false,
+  });
+  await firestore.collection("events").add({
+    "ownerId": "123456",
+    "details": "Work appointment",
+    "location": "Montreal",
+    "date": "2023-02-20 12:30",
+    "isWork": true,
   });
 
   testWidgets("Both modes test", (WidgetTester tester) async {
@@ -104,7 +119,10 @@ Future<void> main() async {
     await tester.pumpWidget(MaterialApp(
         title: "Test app",
         home: TodoList(
-            firestore: firestore, firebaseAuth: auth, isWorkMode: false)));
+          firestore: firestore,
+          firebaseAuth: auth,
+          isWorkMode: false,
+        )));
     await tester.pump();
 
     await tester.tap(find.byType(FloatingActionButton));
@@ -423,5 +441,83 @@ Future<void> main() async {
     expect(find.byKey(const Key("Button3")), findsOneWidget);
     expect(find.byKey(const Key("Button4")), findsOneWidget);
     expect(find.byKey(const Key("Slider")), findsOneWidget);
+  });
+
+  testWidgets("See home events test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: EventList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+          isWorkMode: false,
+        )));
+    await tester.pump();
+
+    expect(find.text("Appointment"), findsOneWidget);
+    expect(find.text("Montreal"), findsOneWidget);
+    expect(find.text("Feb 20 12:30"), findsOneWidget);
+  });
+
+  testWidgets("See work events test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: EventList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+          isWorkMode: true,
+        )));
+    await tester.pump();
+
+    expect(find.text("Work appointment"), findsOneWidget);
+    expect(find.text("Montreal"), findsOneWidget);
+    expect(find.text("Feb 20 12:30"), findsOneWidget);
+  });
+
+  testWidgets("Remove event test test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: EventList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+          isWorkMode: true,
+        )));
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pump(kDoubleTapMinTime);
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.text("Appointment"), findsNothing);
+  });
+
+  testWidgets("Add event test", (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: EventList(
+          firestore: firestore,
+          firebaseAuth: auth,
+          enableNotifications: false,
+          isWorkMode: false,
+        )));
+    await tester.pump();
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(const Key("details")), "New appointment");
+    await tester.enterText(find.byKey(const Key("location")), "New location");
+    await tester.tap(find.text("Confirm"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("New appointment"), findsOneWidget);
+    expect(find.text("New location"), findsOneWidget);
+    expect(
+        find.text(
+            "${DateFormat.MMMd().format(DateTime.now())} ${DateFormat.Hm().format(DateTime.now())}"),
+        findsOneWidget);
   });
 }
