@@ -99,7 +99,7 @@ class _EventFormDialogState extends State<EventFormDialog> {
                   );
                   if (time != null) {
                     _timeController.text =
-                        "${time.hour}:${time.minute < 10 ? "0" : ""}${time.minute}";
+                        "${time.hour < 10 ? "0" : ""}${time.hour}:${time.minute < 10 ? "0" : ""}${time.minute}";
                   }
                 },
               ),
