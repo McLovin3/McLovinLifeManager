@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../lists/birthday_list.dart';
 import '../lists/event_list.dart';
@@ -16,6 +21,8 @@ class HomeScaffold extends StatefulWidget {
   final Function changeMode;
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
+  final Uint8List? background;
+  final Function refreshImage;
 
   const HomeScaffold({
     required this.isDarkTheme,
@@ -23,8 +30,10 @@ class HomeScaffold extends StatefulWidget {
     required this.changeMode,
     required this.firestore,
     required this.firebaseAuth,
-    Key? key,
-  }) : super(key: key);
+    required this.background,
+    required this.refreshImage,
+    super.key,
+  });
 
   @override
   State<HomeScaffold> createState() => _HomeScaffoldState();
@@ -32,6 +41,7 @@ class HomeScaffold extends StatefulWidget {
 
 class _HomeScaffoldState extends State<HomeScaffold> {
   int _selectedPage = 0;
+  ImagePicker picker = ImagePicker();
   List<Widget> pages = [];
 
   @override
@@ -80,13 +90,28 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           IconButton(
             onPressed: () => widget.changeTheme(),
             icon: Icon(widget.isDarkTheme ? Icons.sunny : Icons.nightlight),
-          )
+          ),
+          IconButton(
+            onPressed: () async {
+              XFile? image =
+                  await picker.pickImage(source: ImageSource.gallery);
+              final storageRef = FirebaseStorage.instance.ref();
+              final backgroundRef = storageRef.child("background.png");
+              if (image != null) {
+                await backgroundRef.putFile(File(image.path));
+                widget.refreshImage();
+              }
+            },
+            icon: const Icon(Icons.image),
+          ),
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/background.png"),
+            image: widget.background == null
+                ? const AssetImage("assets/background.png")
+                : Image.memory(widget.background!).image,
             fit: BoxFit.cover,
           ),
         ),

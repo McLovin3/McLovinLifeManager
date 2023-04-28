@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../lists/event_list.dart';
@@ -11,15 +12,17 @@ class WorkScaffold extends StatefulWidget {
   final Function changeMode;
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
+  final Uint8List? background;
 
   const WorkScaffold({
+    required this.background,
     required this.isDarkTheme,
     required this.changeTheme,
     required this.changeMode,
     required this.firestore,
     required this.firebaseAuth,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<WorkScaffold> createState() => _WorkScaffoldState();
@@ -60,13 +63,13 @@ class _WorkScaffoldState extends State<WorkScaffold> {
           IconButton(
             onPressed: () => widget.changeTheme(),
             icon: Icon(widget.isDarkTheme ? Icons.sunny : Icons.nightlight),
-          )
+          ),
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/background.png"),
+            image: Image.memory(widget.background!).image,
             fit: BoxFit.cover,
           ),
         ),
