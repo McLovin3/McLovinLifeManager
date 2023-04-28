@@ -106,6 +106,7 @@ class _JournalListState extends State<JournalList> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      backgroundColor: Colors.transparent,
     );
   }
 }

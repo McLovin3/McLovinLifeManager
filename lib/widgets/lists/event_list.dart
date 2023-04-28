@@ -110,6 +110,7 @@ class _EventListState extends State<EventList> {
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      backgroundColor: Colors.transparent,
     );
   }
 }

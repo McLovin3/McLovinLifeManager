@@ -103,6 +103,7 @@ class _ItemListListState extends State<ItemListList> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      backgroundColor: Colors.transparent,
     );
   }
 }

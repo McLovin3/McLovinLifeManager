@@ -83,7 +83,15 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           )
         ],
       ),
-      body: pages.elementAt(_selectedPage),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: pages.elementAt(_selectedPage),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPage,
         items: const [

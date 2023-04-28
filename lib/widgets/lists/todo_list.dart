@@ -96,12 +96,13 @@ class _TodoListState extends State<TodoList> {
             builder: (context) => TodoFormDialog(
                   refreshTodos: () => setState(() {}),
                   firestore: widget.firestore,
-                  isWorkMode : widget.isWorkMode,
+                  isWorkMode: widget.isWorkMode,
                   firebaseAuth: widget.firebaseAuth,
                 )),
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      backgroundColor: Colors.transparent,
     );
   }
 }

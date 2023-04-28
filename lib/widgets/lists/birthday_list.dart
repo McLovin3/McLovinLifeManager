@@ -105,6 +105,7 @@ class _BirthdayListState extends State<BirthdayList> {
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      backgroundColor: Colors.transparent,
     );
   }
 
