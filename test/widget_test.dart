@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mclovin_life_manager/main.dart';
+import 'package:mclovin_life_manager/pages/home_page.dart';
 
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/event_list.dart';
@@ -77,7 +78,6 @@ Future<void> main() async {
 
     expect(find.text("Do stuff"), findsOneWidget);
 
-    debugDumpApp();
     await tester.tap(find.byIcon(Icons.work));
     await tester.pumpAndSettle();
 
@@ -519,5 +519,20 @@ Future<void> main() async {
         find.text(
             "${DateFormat.MMMd().format(DateTime.now())} ${DateFormat.Hm().format(DateTime.now())}"),
         findsOneWidget);
+  });
+
+  testWidgets("Change image button is present test",
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+        title: "Test app",
+        home: HomePage(
+          firestore: firestore,
+          firebaseAuth: auth,
+          changeTheme: () => {},
+          isDarkTheme: true,
+        )));
+    await tester.pump();
+
+    expect(find.byIcon(Icons.image), findsOneWidget);
   });
 }

@@ -69,7 +69,9 @@ class _WorkScaffoldState extends State<WorkScaffold> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: Image.memory(widget.background!).image,
+            image: widget.background == null
+                ? const AssetImage("assets/background.png")
+                : Image.memory(widget.background!).image,
             fit: BoxFit.cover,
           ),
         ),
