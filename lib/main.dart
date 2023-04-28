@@ -21,7 +21,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  int lightLevel = await Light().lightSensorStream.first;
+  int lightLevel = await Light()
+      .lightSensorStream
+      .first
+      .timeout(const Duration(seconds: 3), onTimeout: () => 50);
 
   runApp(
     MyApp(
