@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:light/light.dart';
-import 'package:mclovin_life_manager/pages/home_page.dart';
-import 'package:mclovin_life_manager/pages/journal_page.dart';
-import 'package:mclovin_life_manager/pages/list_page.dart';
-import 'package:mclovin_life_manager/services/notifications_service.dart';
 
 import 'firebase_options.dart';
+import 'pages/home_page.dart';
+import 'pages/journal_page.dart';
+import 'pages/list_page.dart';
+import 'services/notifications_service.dart';
 import 'widgets/themes/themes.dart';
 
 const String email = "mathieu.ford@gmail.com";
