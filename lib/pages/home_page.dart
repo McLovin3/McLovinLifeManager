@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/scaffolds/home_scaffold.dart';
-import '../widgets/scaffolds/work_scaffold.dart';
 
 class HomePage extends StatefulWidget {
   final bool isDarkTheme;
@@ -26,7 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isWorkMode = false;
   Uint8List? _background;
 
   @override
@@ -37,24 +35,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return _isWorkMode
-        ? WorkScaffold(
-            firebaseAuth: widget.firebaseAuth,
-            firestore: widget.firestore,
-            isDarkTheme: widget.isDarkTheme,
-            changeTheme: widget.changeTheme,
-            changeMode: changeMode,
-            background: _background,
-          )
-        : HomeScaffold(
-            firebaseAuth: widget.firebaseAuth,
-            firestore: widget.firestore,
-            isDarkTheme: widget.isDarkTheme,
-            changeTheme: widget.changeTheme,
-            changeMode: changeMode,
-            background: _background,
-            refreshImage: refreshImage,
-          );
+    return HomeScaffold(
+      firebaseAuth: widget.firebaseAuth,
+      firestore: widget.firestore,
+      isDarkTheme: widget.isDarkTheme,
+      changeTheme: widget.changeTheme,
+      background: _background,
+      refreshImage: refreshImage,
+    );
   }
 
   void refreshImage() async {
@@ -67,11 +55,5 @@ class _HomePageState extends State<HomePage> {
       });
       // ignore: empty_catches
     } catch (e) {}
-  }
-
-  void changeMode() {
-    setState(() {
-      _isWorkMode = !_isWorkMode;
-    });
   }
 }

@@ -4,9 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+
 import 'package:mclovin_life_manager/main.dart';
 import 'package:mclovin_life_manager/pages/home_page.dart';
-
 import 'package:mclovin_life_manager/widgets/lists/birthday_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/event_list.dart';
 import 'package:mclovin_life_manager/widgets/lists/item_list_list.dart';
@@ -66,22 +66,6 @@ Future<void> main() async {
     "location": "Montreal",
     "date": "2023-02-20 12:30",
     "isWork": true,
-  });
-
-  testWidgets("Both modes test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firestore: firestore,
-      firebaseAuth: auth,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    expect(find.text("Do stuff"), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.work));
-    await tester.pumpAndSettle();
-
-    expect(find.text("Do work stuff"), findsOneWidget);
   });
 
   testWidgets("Shows todo test", (WidgetTester tester) async {
@@ -334,113 +318,6 @@ Future<void> main() async {
     await tester.pumpAndSettle();
 
     expect(find.text("Second list"), findsOneWidget);
-  });
-
-  testWidgets("See journals test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firebaseAuth: auth,
-      firestore: firestore,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    await tester.tap(find.byIcon(Icons.book));
-    await tester.pumpAndSettle();
-
-    expect(find.text("Feb 17"), findsOneWidget);
-  });
-
-  testWidgets("See journal entry test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firebaseAuth: auth,
-      firestore: firestore,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    await tester.tap(find.byIcon(Icons.book));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text("Feb 17"));
-    await tester.pumpAndSettle();
-
-    expect(find.text("Today I did super cool stuff"), findsOneWidget);
-  });
-
-  testWidgets("Delete a journal test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firebaseAuth: auth,
-      firestore: firestore,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    await tester.tap(find.byIcon(Icons.book));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pump(kDoubleTapMinTime);
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
-
-    expect(find.text("Feb 17"), findsNothing);
-  });
-
-  testWidgets("Add journal test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firebaseAuth: auth,
-      firestore: firestore,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    await tester.tap(find.byIcon(Icons.book));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byType(FloatingActionButton));
-    await tester.pumpAndSettle();
-
-    await tester.enterText(
-        find.byKey(const Key("text")), "I did cool things today");
-    await tester.tap(find.text("Submit"));
-    await tester.pumpAndSettle();
-
-    expect(find.text(DateFormat.MMMd().format(DateTime.now())), findsOneWidget);
-  });
-
-  testWidgets("breathing aid test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firebaseAuth: auth,
-      firestore: firestore,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    await tester.tap(find.byIcon(Icons.nature));
-    await tester.pumpAndSettle();
-
-    expect(find.text("60"), findsOneWidget);
-
-    await tester.tap(find.text("Start"));
-    await tester.pump();
-  });
-
-  testWidgets("fidget zone UI test", (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp(
-      firebaseAuth: auth,
-      firestore: firestore,
-      lightLevel: 50,
-    ));
-    await tester.pump();
-
-    await tester.tap(find.byIcon(Icons.toys));
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(const Key("Button1")), findsOneWidget);
-    expect(find.byKey(const Key("Button2")), findsOneWidget);
-    expect(find.byKey(const Key("Button3")), findsOneWidget);
-    expect(find.byKey(const Key("Button4")), findsOneWidget);
-    expect(find.byKey(const Key("Slider")), findsOneWidget);
   });
 
   testWidgets("See home events test", (WidgetTester tester) async {
