@@ -10,15 +10,11 @@ import 'package:image_picker/image_picker.dart';
 import '../lists/birthday_list.dart';
 import '../lists/event_list.dart';
 import '../lists/item_list_list.dart';
-import '../lists/journal_list.dart';
 import '../lists/todo_list.dart';
-import '../other/breathing_aid.dart';
-import '../other/fidget_zone.dart';
 
 class HomeScaffold extends StatefulWidget {
   final bool isDarkTheme;
   final Function changeTheme;
-  final Function changeMode;
   final FirebaseFirestore firestore;
   final FirebaseAuth firebaseAuth;
   final Uint8List? background;
@@ -27,7 +23,6 @@ class HomeScaffold extends StatefulWidget {
   const HomeScaffold({
     required this.isDarkTheme,
     required this.changeTheme,
-    required this.changeMode,
     required this.firestore,
     required this.firebaseAuth,
     required this.background,
@@ -61,18 +56,12 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         firebaseAuth: widget.firebaseAuth,
         firestore: widget.firestore,
       ),
-      JournalList(
-        firestore: widget.firestore,
-        firebaseAuth: widget.firebaseAuth,
-      ),
       EventList(
         firestore: widget.firestore,
         firebaseAuth: widget.firebaseAuth,
         enableNotifications: true,
         isWorkMode: false,
       ),
-      const BreathingAid(),
-      const FidgetZone(),
     ];
     super.initState();
   }
@@ -83,10 +72,6 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       appBar: AppBar(
         title: const Center(child: Text("Home")),
         actions: [
-          IconButton(
-            onPressed: () => widget.changeMode(),
-            icon: const Icon(Icons.work),
-          ),
           IconButton(
             onPressed: () => widget.changeTheme(),
             icon: Icon(widget.isDarkTheme ? Icons.sunny : Icons.nightlight),
@@ -133,20 +118,8 @@ class _HomeScaffoldState extends State<HomeScaffold> {
             label: "Lists",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: "Journal",
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month),
             label: "Events",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.nature),
-            label: "Breathing Aid",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.toys),
-            label: "Fidget",
           ),
         ],
         onTap: (index) {
