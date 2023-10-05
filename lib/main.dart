@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:light/light.dart';
 
 import 'firebase_options.dart';
@@ -11,8 +12,6 @@ import 'pages/list_page.dart';
 import 'services/notifications_service.dart';
 import 'widgets/themes/themes.dart';
 
-const String email = "mathieu.ford@gmail.com";
-const String password = "password";
 const int lightThreshhold = 25;
 
 void main() async {
@@ -21,6 +20,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  try {
+    await dotenv.load(fileName: ".env");
+    // ignore: empty_catches
+  } catch (e) {}
   int lightLevel = await Light()
       .lightSensorStream
       .first
@@ -53,6 +56,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isDarkTheme = false;
+  String? email;
+  String? password;
 
   @override
   void initState() {
@@ -62,13 +67,29 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    try {
+      email = dotenv.env["email"];
+      password = dotenv.env["password"];
+      // ignore: empty_catches
+    } catch (e) {}
+
+    if (email == null || password == null) {
+      return const Center(
+        child: MaterialApp(
+          home: Center(
+            child: Text(
+              "Please add email and password to .env file",
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    }
+
     return FutureBuilder(
       future: widget.firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password),
+          .signInWithEmailAndPassword(email: email!, password: password!),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Center(child: Text("No internet connection"));
-        }
         return MaterialApp(
           title: "McLovin Life Manager",
           theme: lightTheme,
@@ -76,12 +97,19 @@ class _MyAppState extends State<MyApp> {
           themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
           initialRoute: "/",
           routes: {
-            "/": (context) => HomePage(
-                  isDarkTheme: _isDarkTheme,
-                  changeTheme: changeTheme,
-                  firebaseAuth: widget.firebaseAuth,
-                  firestore: widget.firestore,
-                ),
+            "/": (context) => snapshot.hasError
+                ? HomePage(
+                    isDarkTheme: _isDarkTheme,
+                    changeTheme: changeTheme,
+                    firebaseAuth: widget.firebaseAuth,
+                    firestore: widget.firestore,
+                  )
+                : const Center(
+                    child: Text(
+                      "No internet connection",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
             "/list": (context) => ListPage(
                   firebaseAuth: widget.firebaseAuth,
                   firestore: widget.firestore,
