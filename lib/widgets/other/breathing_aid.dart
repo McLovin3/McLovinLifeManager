@@ -96,7 +96,7 @@ class _BreathingAidState extends State<BreathingAid>
         ElevatedButton(
           onPressed: _isRunning ? null : start,
           style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all(
+            minimumSize: WidgetStateProperty.all(
               const Size(200, 50),
             ),
           ),

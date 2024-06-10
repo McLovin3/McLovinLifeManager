@@ -24,9 +24,9 @@ class _FidgetZoneState extends State<FidgetZone> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               SoundButton(
                 key: Key("Button1"),
                 soundOnPress: "clickStart1.mp3",
@@ -41,9 +41,9 @@ class _FidgetZoneState extends State<FidgetZone> {
               ),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               SoundButton(
                 key: Key("Button3"),
                 soundOnPress: "clickStart3.mp3",
